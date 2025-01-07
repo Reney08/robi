@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step Motor Control</title>
+</head>
+<body>
+    <h1>Step Motor Control</h1>
+    <div id="position-buttons">
+        <!-- Position buttons will be dynamically added here -->
+    </div>
+    <p>Current Steps: <span id="step_count">{{ step_count }}</span></p>
+
+    <!-- Embed the JSON data directly into the HTML -->
+    <script id="positions-data" type="application/json">
+        {{ positions | tojson }}
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
