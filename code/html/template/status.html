@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../pictures/sva-logo-2024nobackground.png" type="image/png">
     <link rel="stylesheet" href="../static/css/status.css">
-    <link rel="stylesheet" href="../static/css/stepper_status.css" id="stepperCSS" disabled>
-    <link rel="stylesheet" href="../static/css/servo.css')" id="servoCSS" disabled>
-    <link rel="stylesheet" href="../static/css/scale_status.css" id="scaleCSS" disabled>
+    <link rel="stylesheet" href="../static/css/stepper_status.css">
+    <link rel="stylesheet" href="../static/css/servo_status.css">
+    <link rel="stylesheet" href="../static/css/scale_status.css">
     <title>Bar Roboter</title>
 </head>
 <body>
@@ -22,10 +22,10 @@
         <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
         <nav class="menu-content" id="menuContent">
             <ul>
-                <li><a href="#" onclick="showPage('general')">General Status</a></li>
-                <li><a href="#" onclick="showPage('stepper')">Stepper Motor Status</a></li>
-                <li><a href="#" onclick="showPage('servo')">Servo Motor Status</a></li>
-                <li><a href="#" onclick="showPage('scale')">Scale Status</a></li>
+                <li><a href="/api/status" onclick="showPage('general')">General Status</a></li>
+                <li><a href="/api/stepper/status" onclick="showPage('stepper')">Stepper Motor Status</a></li>
+                <li><a href="/api/servo/status" onclick="showPage('servo')">Servo Motor Status</a></li>
+                <li><a href="/api/scale/status" onclick="showPage('scale')">Scale Status</a></li>
             </ul>
         </nav>
     </div>
@@ -63,7 +63,7 @@
 
     <div id="stepper" class="page">
         <header class="headerbox">
-            <a href="/api/status"><img src="../pictures/sva-logo-2024.png" class="svalogo"></a>
+            <a href="/api/status"><img src="../static/pictures/sva-logo-2024.png" class="svalogo"></a>
             <center>
                 <a href="/api/status" class="robotname">Stepper Motor Status</a>
             </center>
@@ -91,7 +91,7 @@
 
     <div id="servo" class="page">
         <header class="headerbox">
-            <a href="/api/status"><img src="../pictures/sva-logo-2024.png" class="svalogo"></a>
+            <a href="/api/status"><img src="../static/pictures/sva-logo-2024.png" class="svalogo"></a>
             <center>
                 <a href="/api/status" class="robotname">Servo Motor Status</a>
             </center>
@@ -136,6 +136,6 @@
         </div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="../static/js/script.js"></script>
 </body>
 </html>
