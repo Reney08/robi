@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servo Motor Status</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/servo_status.css') }}">
+    <script src="{{ url_for('static', filename='js/servo_status.js') }}"></script>
+</head>
+<body>
+    <header class="headerbox">
+        <a href="/api/status"><img src="/pictures/sva-logo-2024.png" class="svalogo"></a>
+        <center>
+            <a href="/api/status" class="robotname">Servo Motor Status</a>
+        </center>
+    </header>
+    <div id="servo" class="page active">
+        <h1>Servo Motor Status</h1>
+        <div class="status-item">
+            <label for="currentPos">Current Position:</label>
+            <div id="currentPos" class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+        <div class="status-item">
+            <label for="movingStatus">Currently Moving:</label>
+            <span id="movingStatus">No</span>
+        </div>
+        <div class="status-item">
+            <label for="direction">Direction:</label>
+            <span id="direction">None</span>
+        </div>
+        <div class="status-item">
+            <label for="enabledStatus">Enabled:</label>
+            <span id="enabledStatus">No</span>
+        </div>
+    </div>
+</body>
+</html>
