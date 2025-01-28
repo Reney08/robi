@@ -4,7 +4,7 @@ def register_blueprints(app):
     from .servo_routes import servo_routes
     from .scale_routes import scale_routes
 
-    app.register_blueprint(main_routes)
-    app.register_blueprint(stepper_routes)
-    app.register_blueprint(servo_routes)
-    app.register_blueprint(scale_routes)
+    app.register_blueprint(main_routes, url_prefix='/api')
+    app.register_blueprint(stepper_routes, url_prefix='/api/stepper')
+    app.register_blueprint(servo_routes, url_prefix='/api/servo')
+    app.register_blueprint(scale_routes, url_prefix='/api/scale')
