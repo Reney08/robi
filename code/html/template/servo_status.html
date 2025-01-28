@@ -3,37 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/pictures/sva-logo-2024nobackground.png" type="image/png">
+    <link rel="stylesheet" href="../static/css/status.css">
+    <link rel="stylesheet" href="../static/css/stepper_status.css">
+    <link rel="stylesheet" href="../static/css/servo_status.css">
+    <link rel="stylesheet" href="../static/css/scale_status.css">
     <title>Servo Motor Status</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/servo_status.css') }}">
-    <script src="{{ url_for('static', filename='js/servo_status.js') }}"></script>
 </head>
 <body>
     <header class="headerbox">
-        <a href="/api/status"><img src="../pictures/sva-logo-2024.png" class="svalogo"></a>
+        <a href="/api/status"><img src="../static/pictures/sva-logo-2024.png" class="svalogo"></a>
         <center>
             <a href="/api/status" class="robotname">Servo Motor Status</a>
         </center>
     </header>
+
+    <div class="menu">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <nav class="menu-content" id="menuContent">
+            <ul>
+                <li><a href="/api/status" onclick="showPage('general')">General Status</a></li>
+                <li><a href="/api/stepper/status" onclick="showPage('stepper')">Stepper Motor Status</a></li>
+                <li><a href="/api/servo/status" onclick="showPage('servo')">Servo Motor Status</a></li>
+                <li><a href="/api/scale/status" onclick="showPage('scale')">Scale Status</a></li>
+            </ul>
+        </nav>
+    </div>
+
     <div id="servo" class="page active">
         <h1>Servo Motor Status</h1>
         <div class="status-item">
-            <label for="currentPos">Current Position:</label>
-            <div id="currentPos" class="progress-bar">
-                <div class="progress"></div>
-            </div>
+            <label for="servoPosition">Current Position:</label>
+            <span id="servoPosition">Down</span>
         </div>
         <div class="status-item">
-            <label for="movingStatus">Currently Moving:</label>
-            <span id="movingStatus">No</span>
+            <label for="servoMoving">Currently Moving:</label>
+            <span id="servoMoving">No</span>
         </div>
         <div class="status-item">
-            <label for="direction">Direction:</label>
-            <span id="direction">None</span>
-        </div>
-        <div class="status-item">
-            <label for="enabledStatus">Enabled:</label>
-            <span id="enabledStatus">No</span>
+            <label for="servoEnabled">Enabled:</label>
+            <span id="servoEnabled">No</span>
         </div>
     </div>
+
+    <script src="../static/js/script.js"></script>
 </body>
 </html>
