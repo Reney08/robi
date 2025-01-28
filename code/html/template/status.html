@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/pictures/sva-logo-2024nobackground.png" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/status.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stepper_status.css') }}" id="stepperCSS" disabled>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/servo_status.css') }}" id="servoCSS" disabled>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/scale_status.css') }}" id="scaleCSS" disabled>
+    <title>Bar Roboter</title>
+</head>
+<body>
+    <header class="headerbox">
+        <a href="/api/status"><img src="/pictures/sva-logo-2024.png" class="svalogo"></a>
+        <center>
+            <a href="/api/status" class="robotname">DrinkName</a>
+        </center>
+    </header>
+
+    <div class="menu">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <nav class="menu-content" id="menuContent">
+            <ul>
+                <li><a href="#" onclick="showPage('general')">General Status</a></li>
+                <li><a href="#" onclick="showPage('stepper')">Stepper Motor Status</a></li>
+                <li><a href="#" onclick="showPage('servo')">Servo Motor Status</a></li>
+                <li><a href="#" onclick="showPage('scale')">Scale Status</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <div id="general" class="page active">
+        <center>
+            <div class="robotname" style="padding-top: 70px;">Ihr Getränk wird zubereitet<span class="dots"></span></div>
+        </center>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="markers">
+            <div class="marker" style="left: 25%;">25%<span class="line"></span></div>
+            <div class="marker" style="left: 50%;">50%<span class="line"></span></div>
+            <div class="marker" style="left: 75%;">75%<span class="line"></span></div>
+            <div class="marker" style="left: 100%;">100%<span class="line"></span></div>
+        </div>
+        <div class="status-item">
+            <label>Stepper Initialized:</label>
+            <span id="stepperInit">No</span>
+        </div>
+        <div class="status-item">
+            <label>Servo Initialized:</label>
+            <span id="servoInit">No</span>
+        </div>
+        <div class="status-item">
+            <label>Scale Initialized:</label>
+            <span id="scaleInit">No</span>
+        </div>
+        <div class="status-item">
+            <label>Current Task:</label>
+            <span id="currentTask">Waiting for user to select and start the cocktail mixing</span>
+        </div>
+    </div>
+
+    <div id="stepper" class="page">
+        <header class="headerbox">
+            <a href="/api/status"><img src="/pictures/sva-logo-2024.png" class="svalogo"></a>
+            <center>
+                <a href="/api/status" class="robotname">Stepper Motor Status</a>
+            </center>
+        </header>
+        <h1>Stepper Motor Status</h1>
+        <div class="status-item">
+            <label for="currentPos">Current Position:</label>
+            <div id="currentPos" class="progress-bar">
+                <div class="progress"></div>
+            </div>
+        </div>
+        <div class="status-item">
+            <label for="movingStatus">Currently Moving:</label>
+            <span id="movingStatus">No</span>
+        </div>
+        <div class="status-item">
+            <label for="direction">Direction:</label>
+            <span id="direction">None</span>
+        </div>
+        <div class="status-item">
+            <label for="enabledStatus">Enabled:</label>
+            <span id="enabledStatus">No</span>
+        </div>
+    </div>
+
+    <div id="servo" class="page">
+        <header class="headerbox">
+            <a href="/api/status"><img src="/pictures/sva-logo-2024.png" class="svalogo"></a>
+            <center>
+                <a href="/api/status" class="robotname">Servo Motor Status</a>
+            </center>
+        </header>
+        <h1>Servo Motor Status</h1>
+        <div class="status-item">
+            <label for="servoPosition">Current Position:</label>
+            <span id="servoPosition">Down</span>
+        </div>
+        <div class="status-item">
+            <label for="servoMoving">Currently Moving:</label>
+            <span id="servoMoving">No</span>
+        </div>
+        <div class="status-item">
+            <label for="servoEnabled">Enabled:</label>
+            <span id="servoEnabled">No</span>
+        </div>
+    </div>
+
+    <div id="scale" class="page">
+        <header class="headerbox">
+            <a href="/api/status"><img src="/pictures/sva-logo-2024.png" class="svalogo"></a>
+            <center>
+                <a href="/api/status" class="robotname">Scale Status</a>
+            </center>
+        </header>
+        <h1>Scale Status</h1>
+        <div class="status-item">
+            <label for="currentWeight">Current Weight:</label>
+            <div id="currentWeight" class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <span id="weightValue">0 KG</span>
+        </div>
+        <div class="status-item">
+            <label for="isActive">Active:</label>
+            <span id="isActive">No</span>
+        </div>
+        <div class="status-item">
+            <label for="isEnabled">Enabled:</label>
+            <span id="isEnabled">No</span>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
