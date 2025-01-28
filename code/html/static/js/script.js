@@ -17,6 +17,13 @@ function showPage(pageId) {
     document.getElementById('stepperCSS').disabled = pageId !== 'stepper';
     document.getElementById('servoCSS').disabled = pageId !== 'servo';
     document.getElementById('scaleCSS').disabled = pageId !== 'scale';
+
+    // Update the URL
+    if (pageId === 'general') {
+        history.pushState(null, '', '/api/status');
+    } else {
+        history.pushState(null, '', `/api/${pageId}/status`);
+    }
 }
 
 function setProgress(percentage) {
