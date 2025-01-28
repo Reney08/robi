@@ -14,7 +14,7 @@ class FlaskApp:
             return redirect(url_for('main_routes.status'))
 
     def run(self):
-        self.app.run(host='127.0.0.1', port=5000)
+        self.app.run(host='localhost', port=5000)
 
 if __name__ == '__main__':
     flask_app = FlaskApp()
