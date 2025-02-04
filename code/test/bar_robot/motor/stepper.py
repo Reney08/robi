@@ -175,3 +175,9 @@ class StepperMotor:
     def save_available_cocktails(self):
         with open(self.available_cocktails_file, 'w') as f:
             json.dump(self.available_cocktails, f, indent=4)
+
+    def shutdown(self):
+        self.logger.info("Shutting down stepper motor")
+        GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
+        self.servo.move_to_inactive()  # Ensure the servo is in the inactive position
+        self.logger.info("Stepper motor shutdown complete")
