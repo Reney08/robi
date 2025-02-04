@@ -7,17 +7,18 @@ class ServoMotor:
     # Define pulse width ranges (adjust as needed for your servos)
     pulse_min = 150  # Min pulse length out of 4096
     pulse_max = 600  # Max pulse length out of 4096
-    
+
+    mid_pos = (pulse_max + pulse_min) // 2
+    range = pulse_max - pulse_min
+    inactive_pos = mid_pos + (range // 9) + 50
+    active_pos = mid_pos - (range // 9) + 65
     def __init__(self):
         self.logger = setup_logger()
         self.pwm = PCA9685(busnum=1)
         self.pwm.set_pwm_freq(60)
         self.positionsFileHandler = FileHandler('./json/positions.json')
         self.positions = self.positionsFileHandler.readJson()
-        mid_pos = (pulse_max + pulse_min) // 2
-        range = pulse_max - pulse_min
-        inactive_pos = mid_pos + (range // 9) + 50
-        active_pos = mid_pos - (range // 9) + 65
+        
 
     def move_to_active(self):
         self.logger.info("Moving servo to active position")
