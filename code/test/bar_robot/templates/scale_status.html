@@ -2,16 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scale Status - Bar Robot</title>
+    <title>{{ cocktail }} - Bar Robot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <header>
-        <h1>Scale Status</h1>
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='logo.png') }}" alt="Bar Robot Logo" class="logo">
+        </a>
+        <h1>{{ cocktail }}</h1>
     </header>
     <main>
-        <h2>Status</h2>
-        <p>Weight: {{ status.weight }}</p>
+        <h2>Start Mixing</h2>
+        <form action="{{ url_for('start_mixing') }}" method="post">
+            <input type="hidden" name="cocktail" value="{{ cocktail }}">
+            <button type="submit">Start</button>
+        </form>
     </main>
 </body>
 </html>
