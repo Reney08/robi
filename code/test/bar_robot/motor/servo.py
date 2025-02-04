@@ -13,11 +13,14 @@ class ServoMotor:
         self.inactive_pos = 375
         self.active_pos = 325
 
-    def move_to_position(self, position):
-        if position == 'active':
-            self.pwm.set_pwm(0, 0, self.active_pos)
-        else:
-            self.pwm.set_pwm(0, 0, self.inactive_pos)
+    def move_to_active(self):
+        self.logger.info("Moving servo to active position")
+        self.pwm.set_pwm(0, 0, self.active_pos)
+        time.sleep(1)
+
+    def move_to_inactive(self):
+        self.logger.info("Moving servo to inactive position")
+        self.pwm.set_pwm(0, 0, self.inactive_pos)
         time.sleep(1)
 
     def get_status(self):
