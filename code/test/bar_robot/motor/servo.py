@@ -4,6 +4,10 @@ from fileHandler import FileHandler
 from logger import setup_logger
 
 class ServoMotor:
+    # Define pulse width ranges (adjust as needed for your servos)
+    pulse_min = 150  # Min pulse length out of 4096
+    pulse_max = 600  # Max pulse length out of 4096
+    
     def __init__(self):
         self.logger = setup_logger()
         self.pwm = PCA9685(busnum=1)
