@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Bar Robot</h1>
+    </header>
+    <main>
+        <h2>Select a Cocktail</h2>
+        <ul>
+            {% for cocktail in cocktails %}
+                <li><a href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">{{ cocktail }}</a></li>
+            {% endfor %}
+        </ul>
+    </main>
+</body>
+</html>
