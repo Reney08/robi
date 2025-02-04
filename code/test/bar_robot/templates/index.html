@@ -28,6 +28,8 @@
                 <li><a href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">{{ cocktail }}</a></li>
             {% endfor %}
         </ul>
+        <!-- Add the shutdown button to the bottom left -->
+        <button class="bottom-left-button" onclick="location.href='{{ url_for('shutdown') }}'">shutdown</button>
     </main>
 </body>
 </html>
