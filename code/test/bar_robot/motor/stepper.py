@@ -79,6 +79,11 @@ class StepperMotor:
     def init(self):
         if self.initialized:
             return
+       
+        print("Returning servo to inactive position...")
+                self.servo.move_to_inactive()
+                time.sleep(1)
+        
         for step in self.initSequence:
             if step == "left":
                 self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
