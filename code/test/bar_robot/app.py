@@ -66,7 +66,6 @@ def shutdown():
     stepper.shutdown()
     servo.shutdown()
     scale.shutdown()
-    GPIO.cleanup()
     return "System shutdown complete."
 
 if __name__ == '__main__':
