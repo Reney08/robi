@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Stepper Motor Status - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Stepper Motor Status</h1>
+    </header>
+    <main>
+        <h2>Status</h2>
+        <p>Current Position: {{ status.current_position }}</p>
+        <p>Max Position: {{ status.max_position }}</p>
+        <p>Is Active: {{ status.is_active }}</p>
+        <h2>Move Stepper</h2>
+        <form action="{{ url_for('move_stepper') }}" method="post">
+            <label for="position">Position:</label>
+            <input type="number" id="position" name="position" required>
+            <button type="submit">Move</button>
+        </form>
+    </main>
+</body>
+</html>
