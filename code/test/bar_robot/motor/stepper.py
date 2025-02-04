@@ -119,17 +119,6 @@ class StepperMotor:
             self.servo.move_to_inactive()
             time.sleep(1)
             
-            if position_name == "finished":
-                print("Sequence completed. Returning to home position...")
-                time.sleep(10)
-                self.servo.move_to_inactive()
-                self.move_to_position(self.nullPos)
-                time.sleep(1)
-                print("Returned to Null position.")
-                print("Available Cocktails:")
-                for cocktail in self.available_cocktails:
-                    print(f"- {cocktail}")
-                break
             if position_name in self.positions:
                 # print(self.positions)
                 target_steps = self.positions[position_name]  # Lookup the position in positions.json
@@ -151,7 +140,18 @@ class StepperMotor:
             
             else: 
                 print(f"Invalid position in sequence: {position_name}")
-            
+                
+            if position_name == "finished":
+                print("Sequence completed. Returning to home position...")
+                time.sleep(10)
+                self.servo.move_to_inactive()
+                self.move_to_position(self.nullPos)
+                time.sleep(1)
+                print("Returned to Null position.")
+                print("Available Cocktails:")
+                for cocktail in self.available_cocktails:
+                    print(f"- {cocktail}")
+                break
 
     def load_sequence(self, cocktail_name):
         sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
