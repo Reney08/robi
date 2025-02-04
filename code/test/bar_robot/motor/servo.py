@@ -35,3 +35,9 @@ class ServoMotor:
         return {
             'current_position': 'active' if self.pwm.get_pwm(0) == self.active_pos else 'inactive'
         }
+
+    def shutdown(self):
+        self.logger.info("Shutting down servo motor")
+        self.move_to_inactive()  # Ensure the servo is in the inactive position
+        self.pwm.set_pwm(0, 0, 0)  # Turn off the PWM signal
+        self.logger.info("Servo motor shutdown complete")
