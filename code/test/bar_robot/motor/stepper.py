@@ -98,8 +98,8 @@ class StepperMotor:
 
     def getSchalterLinksStatus(self):
         return GPIO.input(self.schalterLinksPin) == 1
-
- def execute_sequence(self, sequence):
+        
+    def execute_sequence(self, sequence):
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
@@ -139,7 +139,7 @@ class StepperMotor:
             print("Returning servo to inactive position...")
             self.pwm.set_pwm(0, 0, self.inactive_pos)
             time.sleep(1)  # Wait for servo movement
-
+            
     def load_sequence(self, cocktail_name):
         sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
         try:
