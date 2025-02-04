@@ -89,10 +89,63 @@ class StepperMotor:
                 time.sleep(1)
 
         self.maxPos = abs(self.nullPos) + abs(self.maxPos)
+        self.temp_disable_limit_switch_check = True
         self.moveRelPos(10, self.aktuellePos)
+        self.temp_disable_limit_switch_check = False
 
     def getSchalterRechtsStatus(self):
         return GPIO.input(self.schalterRechtsPin) == 1
 
     def getSchalterLinksStatus(self):
         return GPIO.input(self.schalterLinksPin) == 1
+
+ def execute_sequence(self, sequence):
+        for step in sequence:
+            position_name = step["position"]
+            wait_time = step["wait_time"]
+            print(position_name)
+            print(wait_time)
+            print(self.aktuellePos)
+    
+            if position_name in self.positions:
+                print(self.positions)
+                target_steps = self.positions[position_name]  # Lookup the position in positions.json
+                # Move the motor only if needed
+                if target_steps != self.aktuellePos:
+                    self.move_to_position(target_steps)
+
+            else: 
+                print(f"Invalid position in sequence: {position_name}")
+            
+            if position_name == "finished":
+                print("Sequence completed. Returning to home position...")
+                time.sleep(10)
+                self.move_to_position(self.nullPos)
+                self.pwm.set_pwm(0, 0, self.inactive_pos)
+                time.sleep(1)
+                print("Returned to Null position.")
+                print("Available Cocktails:")
+                for cocktail in self.available_cocktails:
+                    print(f"- {cocktail}")
+                break
+            time.sleep(1)
+            
+            # Move the servo regardless of motor movement
+            print("Moving servo to active position...")
+            self.pwm.set_pwm(0, 0, self.active_pos)
+            time.sleep(5)  # Wait for 5 seconds
+    
+            # Move servo back
+            print("Returning servo to inactive position...")
+            self.pwm.set_pwm(0, 0, self.inactive_pos)
+            time.sleep(1)  # Wait for servo movement
+
+    def load_sequence(self, cocktail_name):
+        sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
+        try:
+            with open(sequence_file, 'r') as f:
+                sequence = json.load(f)
+            return sequence
+        except FileNotFoundError:
+            print(f"Sequence file for {cocktail_name} not found.")
+            return None
