@@ -27,6 +27,7 @@ def start_mixing():
     sequence = stepper.load_sequence(cocktail)
     if sequence:
         stepper.execute_sequence(sequence)
+        return redirect(url_for('index'))
     return redirect(url_for('selected_cocktail', selected_cocktail=cocktail))
     
 @app.route('/status')
