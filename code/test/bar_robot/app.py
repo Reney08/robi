@@ -21,6 +21,12 @@ def index():
 def selected_cocktail(selected_cocktail):
     return render_template('selected_cocktail.html', cocktail=selected_cocktail)
 
+@app.route('/start_mixing', methods=['POST'])
+def start_mixing():
+    cocktail = request.form['cocktail']
+    # Add logic to start the mixing process for the selected cocktail
+    return redirect(url_for('selected_cocktail', selected_cocktail=cocktail))
+    
 @app.route('/status')
 def status():
     return render_template('status.html')
