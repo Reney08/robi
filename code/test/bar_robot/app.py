@@ -26,7 +26,7 @@ def start_mixing():
     cocktail = request.form['cocktail']
     sequence = stepper.load_sequence(cocktail)
     if sequence:
-        stepper.init()
+        stepper.execute_sequence(sequence)
         return redirect(url_for('index'))
     return redirect(url_for('selected_cocktail', selected_cocktail=cocktail))
     
