@@ -1,0 +1,9 @@
+[
+    {"position": "Pos2", "wait_time": 3},
+    {"position": "Pos2", "wait_time": 3},
+    {"position": "Pos2", "wait_time": 3},
+    {"position": "Pos3", "wait_time": 3},
+    {"position": "Pos3", "wait_time": 3},
+    {"position": "Pos3", "wait_time": 3},
+    {"position": "finished", "wait_time": 10}
+]
