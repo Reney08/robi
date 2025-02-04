@@ -88,11 +88,11 @@ class StepperMotor:
 
         for step in self.initSequence:
             if step == "left":
-                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
+                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus())
                 self.nullPos = self.aktuellePos = 0
                 time.sleep(1)
             elif step == "right":
-                self.initMoveMotor(GPIO.HIGH, self.getSchalterRechtsStatus)
+                self.initMoveMotor(GPIO.HIGH, self.getSchalterRechtsStatus())
                 self.maxPos = self.aktuellePos
                 time.sleep(1)
             elif step == "left_again":
