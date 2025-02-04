@@ -131,7 +131,7 @@ class StepperMotor:
                     print(f"- {cocktail}")
                 break
             if position_name in self.positions and not position_name == "finished":
-                print(self.positions)
+                # print(self.positions)
                 target_steps = self.positions[position_name]  # Lookup the position in positions.json
                 # Move the motor only if needed
                 if target_steps != self.aktuellePos:
