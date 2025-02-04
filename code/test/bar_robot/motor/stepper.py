@@ -5,6 +5,14 @@ from fileHandler import FileHandler
 from logger import setup_logger
 
 class StepperMotor:
+    STEP = 17
+    DIR = 27
+    EN = 23
+    schalterLinksPin = 16
+    schalterRechtsPin = 24
+    us_delay = 950
+    uS = 0.000001
+
     def __init__(self):
         self.logger = setup_logger()
         self.GPIOConfig()
@@ -28,6 +36,22 @@ class StepperMotor:
         GPIO.output(self.EN, GPIO.LOW)
         self.logger.info("Setup GPIO")
 
+    def moveRelPos(self, relative_steps, aktPos):
+        direction = GPIO.HIGH if relative_steps > 0 else GPIO.LOW
+        absolute_steps = abs(relative_steps)
+        GPIO.output(self.DIR, direction)
+
+        for _ in range(absolute_steps):
+            GPIO.output(self.STEP, GPIO.HIGH)
+            time.sleep(self.uS * self.us_delay)
+            GPIO.output(self.STEP, GPIO.LOW)
+            time.sleep(self.uS * self.us_delay)
+            aktPos += 1 if direction == GPIO.HIGH else -1
+            if (aktPos < -1) or (aktPos > self.maxPos):
+                print("Limit switch triggered! Stopping motor.")
+                break
+        self.aktuellePos = aktPos
+
     def move_to_position(self, target_steps):
         relative_steps = target_steps - self.aktuellePos
         self.moveRelPos(relative_steps, self.aktuellePos)
@@ -39,3 +63,36 @@ class StepperMotor:
             'max_position': self.maxPos,
             'is_active': GPIO.input(self.EN) == GPIO.LOW
         }
+
+    def initMoveMotor(self, direction, stop_condition):
+        GPIO.output(self.DIR, direction)
+        while not stop_condition():
+            GPIO.output(self.STEP, GPIO.HIGH)
+            time.sleep(self.uS * self.us_delay)
+            GPIO.output(self.STEP, GPIO.LOW)
+            time.sleep(self.uS * self.us_delay)
+            self.aktuellePos += 1 if direction == GPIO.HIGH else -1
+
+    def init(self):
+        for step in self.initSequence:
+            if step == "left":
+                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
+                self.nullPos = self.aktuellePos = 0
+                time.sleep(1)
+            elif step == "right":
+                self.initMoveMotor(GPIO.HIGH, self.getSchalterRechtsStatus)
+                self.maxPos = self.aktuellePos
+                time.sleep(1)
+            elif step == "left_again":
+                self.move_to_position(20)
+                self.aktuellePos = 0
+                time.sleep(1)
+
+        self.maxPos = abs(self.nullPos) + abs(self.maxPos)
+        self.moveRelPos(10, self.aktuellePos)
+
+    def getSchalterRechtsStatus(self):
+        return GPIO.input(self.schalterRechtsPin) == 1
+
+    def getSchalterLinksStatus(self):
+        return GPIO.input(self.schalterLinksPin) == 1
