@@ -10,8 +10,10 @@ class ServoMotor:
         self.pwm.set_pwm_freq(60)
         self.positionsFileHandler = FileHandler('./json/positions.json')
         self.positions = self.positionsFileHandler.readJson()
-        self.inactive_pos = 375
-        self.active_pos = 325
+        mid_pos = (pulse_max + pulse_min) // 2
+        range = pulse_max - pulse_min
+        inactive_pos = mid_pos + (range // 9) + 50
+        active_pos = mid_pos - (range // 9) + 65
 
     def move_to_active(self):
         self.logger.info("Moving servo to active position")
