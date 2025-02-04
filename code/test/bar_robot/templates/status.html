@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Status - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Bar Robot Status</h1>
+    </header>
+    <main>
+        <h2>Current Status</h2>
+        <ul>
+            <li><a href="{{ url_for('stepper_status') }}">Stepper Motor Status</a></li>
+            <li><a href="{{ url_for('servo_status') }}">Servo Motor Status</a></li>
+            <li><a href="{{ url_for('scale_status') }}">Scale Status</a></li>
+        </ul>
+    </main>
+</body>
+</html>
