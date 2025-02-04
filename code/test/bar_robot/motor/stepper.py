@@ -145,7 +145,7 @@ class StepperMotor:
                 print("Sequence completed. Returning to home position...")
                 time.sleep(10)
                 self.servo.move_to_inactive()
-                self.move_to_position(self.nullPos)
+                self.move_to_position(self.nullPos + 20)
                 time.sleep(1)
                 print("Returned to Null position.")
                 print("Available Cocktails:")
