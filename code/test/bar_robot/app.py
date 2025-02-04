@@ -61,5 +61,13 @@ def move_servo():
     servo.move_to_position(position)
     return redirect(url_for('servo_status'))
 
+@app.route('/shutdown')
+def shutdown():
+    stepper.shutdown()
+    servo.shutdown()
+    scale.shutdown()
+    GPIO.cleanup()
+    return "System shutdown complete."
+
 if __name__ == '__main__':
     app.run(debug=True)
