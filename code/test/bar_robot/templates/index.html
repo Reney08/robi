@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Bar Robot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        .top-right-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -11,6 +18,8 @@
             <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
         </a>
         <h1>Welcome to the Bar Robot</h1>
+        <!-- Add the button to the top right -->
+        <button class="top-right-button" onclick="location.href='{{ url_for('status') }}'">statusPage</button>
     </header>
     <main>
         <h2>Select a Cocktail</h2>
