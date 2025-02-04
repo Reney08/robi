@@ -11,7 +11,7 @@ class ServoMotor:
     mid_pos = (pulse_max + pulse_min) // 2
     range = pulse_max - pulse_min
     inactive_pos = mid_pos + (range // 9) + 50
-    active_pos = mid_pos - (range // 9) + 65
+    active_pos = mid_pos - (range // 9) + 75
     def __init__(self):
         self.logger = setup_logger()
         self.pwm = PCA9685(busnum=1)
