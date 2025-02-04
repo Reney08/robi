@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cocktail }} - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <h1>{{ cocktail }}</h1>
+    </header>
+    <main>
+        <h2>Start Mixing</h2>
+        <form action="{{ url_for('start_mixing', cocktail=cocktail) }}" method="post">
+            <button type="submit">Start</button>
+        </form>
+    </main>
+</body>
+</html>
