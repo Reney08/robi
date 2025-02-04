@@ -81,7 +81,6 @@ class StepperMotor:
     def init(self):
         if self.initialized:
             return
-
         # Move the servo to the inactive position to avoid collisions
         print("Returning servo to inactive position...")
         self.servo.move_to_inactive()
@@ -115,7 +114,11 @@ class StepperMotor:
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
-    
+
+            print("Returning servo to inactive position...")
+            self.servo.move_to_inactive()
+            time.sleep(1)
+            
             if position_name in self.positions:
                 print(self.positions)
                 target_steps = self.positions[position_name]  # Lookup the position in positions.json
