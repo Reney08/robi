@@ -74,6 +74,8 @@ class StepperMotor:
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
     def init(self):
+        if self.initialized:
+            return
         for step in self.initSequence:
             if step == "left":
                 self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
@@ -92,6 +94,7 @@ class StepperMotor:
         self.temp_disable_limit_switch_check = True
         self.moveRelPos(10, self.aktuellePos)
         self.temp_disable_limit_switch_check = False
+        self.initialized = True
 
     def getSchalterRechtsStatus(self):
         return GPIO.input(self.schalterRechtsPin) == 1
@@ -103,9 +106,9 @@ class StepperMotor:
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
-            print(position_name)
-            print(wait_time)
-            print(self.aktuellePos)
+            # print(position_name)
+            # print(wait_time)
+            # print(self.aktuellePos)
     
             if position_name in self.positions:
                 print(self.positions)
