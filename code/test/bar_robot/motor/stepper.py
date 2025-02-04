@@ -21,11 +21,13 @@ class StepperMotor:
         self.positions = self.positionsFileHandler.readJson()
         self.initFileHandler = FileHandler('./json/stepper_init.json')
         self.initSequence = self.initFileHandler.readJson()
+        self.available_cocktails_file = "./json/available_cocktails.json"
         self.aktuellePos = 0
         self.maxPos = 0
         self.nullPos = 0
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
+        self.load_available_cocktails()
         self.init()
 
     def GPIOConfig(self):
@@ -79,11 +81,12 @@ class StepperMotor:
     def init(self):
         if self.initialized:
             return
-       
+
+        # Move the servo to the inactive position to avoid collisions
         print("Returning servo to inactive position...")
-                self.servo.move_to_inactive()
-                time.sleep(1)
-        
+        self.servo.move_to_inactive()
+        time.sleep(1)
+
         for step in self.initSequence:
             if step == "left":
                 self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
@@ -156,3 +159,16 @@ class StepperMotor:
         except FileNotFoundError:
             print(f"Sequence file for {cocktail_name} not found.")
             return None
+
+    def load_available_cocktails(self):
+        try:
+            with open(self.available_cocktails_file, 'r') as f:
+                self.available_cocktails = json.load(f)
+        except FileNotFoundError:
+            print(f"Warning: {self.available_cocktails_file} not found. Creating default file.")
+            self.available_cocktails = []
+            self.save_available_cocktails()
+
+    def save_available_cocktails(self):
+        with open(self.available_cocktails_file, 'w') as f:
+            json.dump(self.available_cocktails, f, indent=4)
