@@ -13,7 +13,18 @@
         <h1>Edit Servo Positions</h1>
     </header>
     <main>
-        <form action="{{ url_for('update_servo_positions') }}" method="post">
+        <h2>Move Servo</h2>
+        <form action="{{ url_for('servo_move') }}" method="post">
+            <label for="position">Position:</label>
+            <select id="position" name="position" required>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="waiting">Waiting</option>
+            </select>
+            <button type="submit">Move</button>
+        </form>
+        <h2>Edit Servo Positions</h2>
+        <form action="{{ url_for('servo_move') }}" method="post">
             <label for="inactive_pos">Inactive Position:</label>
             <input type="number" id="inactive_pos" name="inactive_pos" required>
             
