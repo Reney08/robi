@@ -82,5 +82,22 @@ def shutdown():
     scale.shutdown()
     return "System shutdown complete."
 
+@app.route('/stepper/move', methods=['GET', 'POST'])
+def stepper_move():
+    if request.method == 'POST':
+        steps = int(request.form['steps'])
+        position_name = request.form['position_name']
+        stepper.moveRelPos(steps, stepper.aktuellePos)
+        new_position = stepper.aktuellePos
+
+        # Save the new position to positions.json
+        stepper.positions[position_name] = new_position
+        with open('./json/positions.json', 'w') as f:
+            json.dump(stepper.positions, f, indent=4)
+
+        return redirect(url_for('stepper_status'))
+
+    return render_template('stepper_move.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
