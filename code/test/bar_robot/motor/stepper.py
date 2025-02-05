@@ -197,6 +197,7 @@ class StepperMotor:
         if position_name not in ['finished', 'nullPos', 'maxPos']:
             self.positions[position_name] = new_value
             self.save_positions()
+            self.move_to_position(new_value)
 
     def delete_position(self, position_name):
         if position_name not in ['finished', 'nullPos', 'maxPos']:
