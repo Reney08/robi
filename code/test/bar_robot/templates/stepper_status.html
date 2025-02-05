@@ -23,6 +23,8 @@
             <input type="number" id="position" name="position" required>
             <button type="submit">Move</button>
         </form>
+        <button onclick="location.href='{{ url_for('stepper_move') }}'">Move Stepper by Steps</button>
+        <button onclick="location.reload()">Refresh Status</button>
     </main>
 </body>
 </html>
