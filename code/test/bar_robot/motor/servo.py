@@ -14,28 +14,32 @@ class ServoMotor:
     inactive_pos = mid_pos + (range // 9) + 20
     active_pos = mid_pos - (range // 9) + 55
     waiting_pos =  mid_pos + (range // 9) - 90
+
+    current_position = 'inactive'
     def __init__(self):
         self.logger = setup_logger()
         self.pwm = PCA9685(busnum=1)
         self.pwm.set_pwm_freq(60)
         self.positionsFileHandler = FileHandler('./json/positions.json')
         self.positions = self.positionsFileHandler.readJson()
-        
 
     def move_to_active(self):
         self.logger.info("Moving servo to active position")
         self.pwm.set_pwm(0, 0, self.active_pos)
         time.sleep(1)
+        current_position = 'active'
 
     def move_to_inactive(self):
         self.logger.info("Moving servo to inactive position")
         self.pwm.set_pwm(0, 0, self.inactive_pos)
         time.sleep(1)
+        current_position = 'inactive'
 
     def move_to_waiting(self):
         self.logger.info("Moving servo to waiting position")
         self.pwm.set_pwm(0, 0, self.waiting_pos)
         time.sleep(1)
+        current_position = 'waiting'
         
     def get_status(self):
         return {
