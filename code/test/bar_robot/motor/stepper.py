@@ -78,7 +78,7 @@ class StepperMotor:
         self.moveRelPos(relative_steps, self.aktuellePos)
         self.aktuellePos = target_steps
         if self.aktuellePos == self.standartPos or self.aktuellePos == self.maxPos:
-            self.servo.move_to_active()
+            self.servo.move_to_waiting()
             time.sleep(1)
 
     def initMoveMotor(self, direction, stop_condition):
