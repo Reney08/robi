@@ -28,7 +28,7 @@ class StepperMotor:
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
         self.load_available_cocktails()
-        self.init()
+        # self.init()
 
     def GPIOConfig(self):
         GPIO.setmode(GPIO.BCM)
