@@ -170,6 +170,10 @@ class StepperMotor:
         self.move_to_position(target_position)
         self.positions[position_name] = self.aktuellePos
         self.save_positions()
+    
+    def save_positions(self):
+        with open('./json/positions.json', 'w') as f:
+            json.dump(self.positions, f, indent=4)
 
     def edit_position(self, position_name, new_value):
         if position_name not in ['finished', 'nullPos', 'maxPos']:
