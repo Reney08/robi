@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Move Stepper - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
+        </a>
+        <h1>Move Stepper</h1>
+    </header>
+    <main>
+        <form action="{{ url_for('stepper_move') }}" method="post">
+            <label for="steps">Steps:</label>
+            <input type="number" id="steps" name="steps" required>
+            <label for="position_name">Position Name:</label>
+            <input type="text" id="position_name" name="position_name" required>
+            <button type="submit">Move and Save Position</button>
+        </form>
+    </main>
+</body>
+</html>
