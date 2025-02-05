@@ -77,6 +77,9 @@ class StepperMotor:
         relative_steps = target_steps - self.aktuellePos
         self.moveRelPos(relative_steps, self.aktuellePos)
         self.aktuellePos = target_steps
+        if self.aktuellePos == self.standartPos or self.aktuellePos == self.maxPos:
+            self.servo.move_to_active()
+            time.sleep(1)
 
     def initMoveMotor(self, direction, stop_condition):
         GPIO.output(self.DIR, direction)
