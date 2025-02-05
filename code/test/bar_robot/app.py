@@ -63,24 +63,11 @@ def scale_status():
     status = scale.get_status()
     return render_template('scale_status.html', status=status)
 
-@app.route('/stepper/move', methods=['POST'])
-def move_stepper():
-    position = request.form['position']
-    stepper.move_to_position(position)
-    return redirect(url_for('stepper_status'))
-
 @app.route('/servo/move', methods=['POST'])
 def move_servo():
     position = request.form['position']
     servo.move_to_position(position)
     return redirect(url_for('servo_status'))
-
-@app.route('/shutdown')
-def shutdown():
-    stepper.shutdown()
-    servo.shutdown()
-    scale.shutdown()
-    return "System shutdown complete."
 
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
@@ -101,6 +88,13 @@ def stepper_move():
             return "Bad Request: Missing form data.", 400
 
     return render_template('stepper_move.html')
+
+@app.route('/shutdown')
+def shutdown():
+    stepper.shutdown()
+    servo.shutdown()
+    scale.shutdown()
+    return "System shutdown complete."
 
 if __name__ == '__main__':
     app.run(debug=True)
