@@ -80,6 +80,15 @@ class StepperMotor:
             time.sleep(self.uS * self.us_delay)
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
+    def quick_init(self):
+        # Move to the left until the left limit switch is triggered
+        self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
+        time.sleep(1)
+        # Move 20 steps to the right
+        self.move_to_position(20)
+        self.aktuellePos = 0
+        time.sleep(1)
+
     def init(self):
         if self.initialized:
             return
