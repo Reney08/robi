@@ -156,7 +156,7 @@ class StepperMotor:
             else: 
                 print(f"Invalid position in sequence: {position_name}")
                 
-            if position_name == "finished"
+            if position_name == "finished":
                 self.servo.move_to_waiting()
                 time.sleep(10)
                 self.servo.move_to_inactive()
