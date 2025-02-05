@@ -58,7 +58,7 @@ class StepperMotor:
         return GPIO.input(self.schalterLinksPin) == 1
 
     def moveRelPos(self, relative_steps, aktPos):
-        self.servo.move_to_intactive()
+        self.servo.move_to_inactive()
         time.sleep(1)
         
         direction = GPIO.HIGH if relative_steps > 0 else GPIO.LOW
@@ -77,7 +77,7 @@ class StepperMotor:
         self.aktuellePos = aktPos
 
     def move_to_position(self, target_steps):
-        self.servo.move_to_intactive()
+        self.servo.move_to_inactive()
         
         relative_steps = target_steps - self.aktuellePos
         self.moveRelPos(relative_steps, self.aktuellePos)
