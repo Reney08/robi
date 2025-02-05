@@ -29,13 +29,12 @@
 <body>
     <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; padding-top: 80px;">
         {% for cocktail in cocktails %}
-        <div class="box" onclick="toggleBox(this)">
+        <div class="box">
             <center>
                 <br>
-                <a class="getränketitel" href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">{{ cocktail }}</a>
-                <div>
-                    <button class="infobutton"><b>i</b></button>
-                </div>
+                <a class="getränketitel" href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">
+                    <button class="infobutton">{{ cocktail }}</button>
+                </a>
             </center>
         </div>
         {% endfor %}
