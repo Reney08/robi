@@ -184,6 +184,26 @@ class StepperMotor:
             print("max_pos not found in positions.json. Using default maxPos.")
             self.maxPos = 0  # Set a default value or handle appropriately
 
+    def move_and_save_position(self, steps, position_name):
+        target_position = self.aktuellePos + steps
+        self.move_to_position(target_position)
+        self.positions[position_name] = self.aktuellePos
+        self.save_positions()
+
+    def edit_position(self, position_name, new_value):
+        if position_name not in ['finished', 'nullPos', 'maxPos']:
+            self.positions[position_name] = new_value
+            self.save_positions()
+
+    def delete_position(self, position_name):
+        if position_name not in ['finished', 'nullPos', 'maxPos']:
+            del self.positions[position_name]
+            self.save_positions()
+
+    def save_positions(self):
+        with open('./json/positions.json', 'w') as f:
+            json.dump(self.positions, f, indent=4)
+
     def shutdown(self):
         self.logger.info("Shutting down stepper motor")
         GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
