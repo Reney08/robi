@@ -65,8 +65,8 @@ class StepperMotor:
     def get_status(self):
         return {
             'current_position': self.aktuellePos,
-            'max_position': self.maxPos,
-            'null_position': self.nullPos,
+            'max_position': self.max_Pos,
+            'null_position': self.null_Pos,
             'is_active': GPIO.input(self.EN) == GPIO.LOW
         }
 
