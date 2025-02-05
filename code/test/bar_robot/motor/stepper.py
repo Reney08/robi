@@ -129,7 +129,7 @@ class StepperMotor:
             self.servo.move_to_inactive()
             time.sleep(1)
             
-            if position_name in self.positions and position_name != "finished":
+            if position_name in self.positions:
                 target_steps = self.positions[position_name]  # Lookup the position in positions.json
                 if target_steps != self.aktuellePos:
                     self.move_to_position(target_steps)
