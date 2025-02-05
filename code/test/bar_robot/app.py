@@ -75,11 +75,11 @@ def stepper_move():
         try:
             steps = int(request.form['steps'])
             position_name = request.form['position_name']
-            stepper.moveRelPos(steps, stepper.aktuellePos)
-            new_position = stepper.aktuellePos
+            target_position = stepper.aktuellePos + steps
+            stepper.move_to_position(target_position)
 
             # Save the new position to positions.json
-            stepper.positions[position_name] = new_position
+            stepper.positions[position_name] = stepper.aktuellePos
             with open('./json/positions.json', 'w') as f:
                 json.dump(stepper.positions, f, indent=4)
 
