@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Bar Robot Application')
-parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to nullPos + 10')
+parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to Standartposition')
 args = parser.parse_args()
 
 # Initialize motors
