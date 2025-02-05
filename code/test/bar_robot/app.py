@@ -85,6 +85,8 @@ def stepper_move():
             elif action == 'delete_position':
                 position_name = request.form['position_name']
                 stepper.delete_position(position_name)
+            elif action == 'move_to_standartPos':
+                stepper.move_to_position(stepper.standartPos)
             return redirect(url_for('stepper_move'))
         except KeyError:
             return "Bad Request: Missing form data.", 400
