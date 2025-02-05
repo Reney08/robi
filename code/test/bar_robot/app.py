@@ -63,14 +63,32 @@ def scale_status():
     status = scale.get_status()
     return render_template('scale_status.html', status=status)
 
-@app.route('/servo/move', methods=['POST'])
-def move_servo():
-    position = request.form['position']
-    if position == 'active':
-        servo.move_to_active()
-    elif position == 'inactive':
-        servo.move_to_inactive()
-    return redirect(url_for('servo_status'))
+@app.route('/servo/move', methods=['GET', 'POST'])
+def servo_move():
+    if request.method == 'POST':
+        if 'inactive_pos' in request.form and 'active_pos' in request.form and 'waiting_pos' in request.form:
+            # Handle updating servo positions
+            inactive_pos = int(request.form['inactive_pos'])
+            active_pos = int(request.form['active_pos'])
+            waiting_pos = int(request.form['waiting_pos'])
+            
+            servo.inactive_pos = inactive_pos
+            servo.active_pos = active_pos
+            servo.waiting_pos = waiting_pos
+            
+            return redirect(url_for('servo_status'))
+        else:
+            # Handle moving the servo
+            position = request.form['position']
+            if position == 'active':
+                servo.move_to_active()
+            elif position == 'inactive':
+                servo.move_to_inactive()
+            elif position == 'waiting':
+                servo.move_to_waiting()
+            return redirect(url_for('servo_status'))
+    
+    return render_template('servo_move.html')
 
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
