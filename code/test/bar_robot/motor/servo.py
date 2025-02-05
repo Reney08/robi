@@ -11,7 +11,7 @@ class ServoMotor:
     mid_pos = (pulse_max + pulse_min) // 2
     range = pulse_max - pulse_min
     # higher added int value = higher servo_pos 
-    inactive_pos = mid_pos + (range // 9)
+    inactive_pos = mid_pos + (range // 9) + 20
     active_pos = mid_pos - (range // 9) + 55
     waiting_pos =  mid_pos + (range // 9) - 90
     def __init__(self):
