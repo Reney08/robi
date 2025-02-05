@@ -33,7 +33,13 @@ def index():
 
 @app.route('/<selected_cocktail>')
 def selected_cocktail(selected_cocktail):
-    return render_template('selected_cocktail.html', cocktail=selected_cocktail)
+    ingredients_file = f'./json/ingredients/{selected_cocktail}_ingredients.json'
+    if os.path.exists(ingredients_file):
+        with open(ingredients_file) as f:
+            ingredients = json.load(f)
+    else:
+        ingredients = []
+    return render_template('selected_cocktail.html', cocktail=selected_cocktail, ingredients=ingredients)
 
 @app.route('/start_mixing', methods=['POST'])
 def start_mixing():
