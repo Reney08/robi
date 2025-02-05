@@ -3,13 +3,27 @@ from motor.stepper import StepperMotor
 from motor.servo import ServoMotor
 from motor.scale import Scale
 import json
+import argparse
 
 app = Flask(__name__)
+
+# Parse command-line arguments
+parser = argparse.ArgumentParser(description='Bar Robot Application')
+parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to nullPos + 10')
+args = parser.parse_args()
 
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor()
 scale = Scale()
+
+# Ensure stepper motor is initialized
+if args.quick:
+    stepper.move_to_position(stepper.nullPos + 10)
+    stepper.aktuellePos = stepper.nullPos + 10
+    stepper.initialized = True
+else:
+    stepper.init()
 
 @app.route('/')
 def index():
