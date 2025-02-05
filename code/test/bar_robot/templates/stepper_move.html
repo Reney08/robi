@@ -23,6 +23,10 @@
             <input type="text" id="position_name" name="position_name" required>
             <button type="submit">Move and Save Position</button>
         </form>
+        <form action="{{ url_for('stepper_move') }}" method="post">
+            <input type="hidden" name="action" value="move_to_standartPos">
+            <button type="submit">Move to StandartPos</button>
+        </form>
         <h2>Edit or Delete Positions</h2>
         <form action="{{ url_for('stepper_move') }}" method="post">
             <input type="hidden" name="action" value="edit_position">
