@@ -13,7 +13,7 @@ class ServoMotor:
     # higher added int value = higher servo_pos 
     inactive_pos = mid_pos + (range // 9)
     active_pos = mid_pos - (range // 9) + 55
-    waiting_pos =  mid_pos + (range // 9) + 90
+    waiting_pos =  mid_pos + (range // 9) + 110
     
     def __init__(self):
         self.logger = setup_logger()
