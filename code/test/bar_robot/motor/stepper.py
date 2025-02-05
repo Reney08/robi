@@ -25,6 +25,7 @@ class StepperMotor:
         self.aktuellePos = 0
         self.maxPos = 0
         self.nullPos = 0
+        self.standartPos = 20  # Default value
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
         self.load_available_cocktails()
@@ -41,6 +42,20 @@ class StepperMotor:
         GPIO.setup(self.schalterRechtsPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
         GPIO.output(self.EN, GPIO.LOW)
         self.logger.info("Setup GPIO")
+        
+    def get_status(self):
+        return {
+            'current_position': self.aktuellePos,
+            'max_position': self.maxPos,
+            'null_position': self.nullPos,
+            'is_active': GPIO.input(self.EN) == GPIO.LOW
+        }
+        
+    def getSchalterRechtsStatus(self):
+        return GPIO.input(self.schalterRechtsPin) == 1
+
+    def getSchalterLinksStatus(self):
+        return GPIO.input(self.schalterLinksPin) == 1
 
     def moveRelPos(self, relative_steps, aktPos):
         direction = GPIO.HIGH if relative_steps > 0 else GPIO.LOW
@@ -63,14 +78,6 @@ class StepperMotor:
         self.moveRelPos(relative_steps, self.aktuellePos)
         self.aktuellePos = target_steps
 
-    def get_status(self):
-        return {
-            'current_position': self.aktuellePos,
-            'max_position': self.maxPos,
-            'null_position': self.nullPos,
-            'is_active': GPIO.input(self.EN) == GPIO.LOW
-        }
-
     def initMoveMotor(self, direction, stop_condition):
         GPIO.output(self.DIR, direction)
         while not stop_condition():
@@ -84,8 +91,8 @@ class StepperMotor:
         # Move to the left until the left limit switch is triggered
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
-        # Move 20 steps to the right
-        self.move_to_position(20)
+        # Move to standartPos
+        self.move_to_position(self.standartPos)
         self.aktuellePos = 0
         time.sleep(1)
 
@@ -93,21 +100,20 @@ class StepperMotor:
         if self.initialized:
             return
         # Move the servo to the inactive position to avoid collisions
-        # print("Returning servo to inactive position...")
         self.servo.move_to_inactive()
         time.sleep(1)
 
         for step in self.initSequence:
             if step == "left":
-                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus())
+                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
                 self.nullPos = self.aktuellePos = 0
                 time.sleep(1)
             elif step == "right":
-                self.initMoveMotor(GPIO.HIGH, self.getSchalterRechtsStatus())
+                self.initMoveMotor(GPIO.HIGH, self.getSchalterRechtsStatus)
                 self.maxPos = self.aktuellePos
                 time.sleep(1)
             elif step == "left_again":
-                self.move_to_position(20)
+                self.move_to_position(self.standartPos)
                 self.aktuellePos = 0
                 time.sleep(1)
 
@@ -115,37 +121,24 @@ class StepperMotor:
         self.moveRelPos(10, self.aktuellePos)
         self.initialized = True
 
-    def getSchalterRechtsStatus(self):
-        return GPIO.input(self.schalterRechtsPin) == 1
-
-    def getSchalterLinksStatus(self):
-        return GPIO.input(self.schalterLinksPin) == 1
-
     def execute_sequence(self, sequence):
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
 
-            # print("Returning servo to inactive position...")
             self.servo.move_to_inactive()
             time.sleep(1)
             
             if position_name in self.positions:
-                # print(self.positions)
                 target_steps = self.positions[position_name]  # Lookup the position in positions.json
-                # Move the motor only if needed
                 if target_steps != self.aktuellePos:
                     self.move_to_position(target_steps)
                 
                 time.sleep(1)
             
-                # Move the servo regardless of motor movement
-                # print("Moving servo to active position...")
                 self.servo.move_to_active()
                 time.sleep(wait_time)  # Wait for the specified time
     
-                # Move servo back
-                # print("Returning servo to inactive position...")
                 self.servo.move_to_inactive()
                 time.sleep(1)  # Wait for servo movement
             
@@ -153,16 +146,42 @@ class StepperMotor:
                 print(f"Invalid position in sequence: {position_name}")
                 
             if position_name == "finished":
-                # print("Sequence completed. Returning to home position...")
                 time.sleep(10)
                 self.servo.move_to_inactive()
-                self.move_to_position(self.nullPos + 20)
+                self.move_to_position(self.standartPos)
                 time.sleep(1)
-                # print("Returned to Null position.")
-                # print("Available Cocktails:")
                 for cocktail in self.available_cocktails:
                     print(f"- {cocktail}")
                 break
+        
+    def load_positions(self):
+        try:
+            self.nullPos = self.positions['nullPos']
+            self.maxPos = self.positions['maxPos']
+            self.standartPos = self.positions.get('standartPos', 20)
+        except KeyError as e:
+            print(f"KeyError: {e} not found in positions.json. Using default values.")
+            self.nullPos = 0
+            self.maxPos = 0  # Set a default value or handle appropriately
+            self.standartPos = 20
+            
+    def move_and_save_position(self, steps, position_name):
+        target_position = self.aktuellePos + steps
+        self.move_to_position(target_position)
+        self.positions[position_name] = self.aktuellePos
+        self.save_positions()
+
+    def edit_position(self, position_name, new_value):
+        if position_name not in ['finished', 'nullPos', 'maxPos']:
+            self.positions[position_name] = new_value
+            self.save_positions()
+            self.move_to_position(new_value)
+
+    def delete_position(self, position_name):
+        if position_name not in ['finished', 'nullPos', 'maxPos']:
+            del self.positions[position_name]
+            self.save_positions()
+
 
     def load_sequence(self, cocktail_name):
         sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
@@ -186,36 +205,6 @@ class StepperMotor:
     def save_available_cocktails(self):
         with open(self.available_cocktails_file, 'w') as f:
             json.dump(self.available_cocktails, f, indent=4)
-
-    def load_positions(self):
-        try:
-            self.nullPos = self.positions['nullPos']
-            self.maxPos = self.positions['maxPos']
-        except KeyError as e:
-            print(f"KeyError: {e} not found in positions.json. Using default values.")
-            self.nullPos = 0
-            self.maxPos = 0  # Set a default value or handle appropriately
-
-    def move_and_save_position(self, steps, position_name):
-        target_position = self.aktuellePos + steps
-        self.move_to_position(target_position)
-        self.positions[position_name] = self.aktuellePos
-        self.save_positions()
-
-    def edit_position(self, position_name, new_value):
-        if position_name not in ['finished', 'nullPos', 'maxPos']:
-            self.positions[position_name] = new_value
-            self.save_positions()
-            self.move_to_position(new_value)
-
-    def delete_position(self, position_name):
-        if position_name not in ['finished', 'nullPos', 'maxPos']:
-            del self.positions[position_name]
-            self.save_positions()
-
-    def save_positions(self):
-        with open('./json/positions.json', 'w') as f:
-            json.dump(self.positions, f, indent=4)
 
     def shutdown(self):
         self.logger.info("Shutting down stepper motor")
