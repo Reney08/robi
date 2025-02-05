@@ -73,22 +73,24 @@ def move_servo():
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
     if request.method == 'POST':
+        action = request.form.get('action')
         try:
-            steps = int(request.form['steps'])
-            position_name = request.form['position_name']
-            target_position = stepper.aktuellePos + steps
-            stepper.move_to_position(target_position)
-
-            # Save the new position to positions.json
-            stepper.positions[position_name] = stepper.aktuellePos
-            with open('./json/positions.json', 'w') as f:
-                json.dump(stepper.positions, f, indent=4)
-
-            return redirect(url_for('stepper_status'))
+            if action == 'move_and_save':
+                steps = int(request.form['steps'])
+                position_name = request.form['position_name']
+                stepper.move_and_save_position(steps, position_name)
+            elif action == 'edit_position':
+                position_name = request.form['position_name']
+                new_value = int(request.form['new_value'])
+                stepper.edit_position(position_name, new_value)
+            elif action == 'delete_position':
+                position_name = request.form['position_name']
+                stepper.delete_position(position_name)
+            return redirect(url_for('stepper_move'))
         except KeyError:
             return "Bad Request: Missing form data.", 400
 
-    return render_template('stepper_move.html')
+    return render_template('stepper_move.html', null_position=stepper.nullPos, max_position=stepper.maxPos, positions=stepper.positions)
 
 @app.route('/shutdown')
 def shutdown():
