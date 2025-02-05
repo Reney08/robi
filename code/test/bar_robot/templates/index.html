@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Bar Robot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='sva-logo-2024nobackground.png') }}" type="image/png">
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Bar Robot</title>
     <style>
-        .top-right-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
+        .bottom-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
         }
     </style>
 </head>
+
+<header class="headerbox">
+    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='sva-logo-2024.png') }}" class="svalogo"></a>
+    <center>
+        <a href="{{ url_for('index') }}" class="robotname">Bar Robot</a>
+    </center>
+</header>
+
 <body>
-    <header>
-        <a href="{{ url_for('index') }}">
-            <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
-        </a>
-        <h1>Welcome to the Bar Robot</h1>
-        <!-- Add the button to the top right -->
-        <button class="top-right-button" onclick="location.href='{{ url_for('status') }}'">statusPage</button>
-    </header>
-    <main>
-        <h2>Select a Cocktail</h2>
-        <ul>
-            {% for cocktail in cocktails %}
-                <li><a href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">{{ cocktail }}</a></li>
-            {% endfor %}
-        </ul>
-        <!-- Add the shutdown button to the bottom left -->
-        <button class="bottom-left-button" onclick="location.href='{{ url_for('shutdown') }}'">shutdown</button>
-    </main>
+    <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; padding-top: 80px;">
+        {% for cocktail in cocktails %}
+        <div class="box" onclick="toggleBox(this)">
+            <center>
+                <br>
+                <a class="getränketitel" href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}">{{ cocktail }}</a>
+                <div>
+                    <button class="infobutton"><b>i</b></button>
+                </div>
+            </center>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="bottom-buttons">
+        <button onclick="location.href='{{ url_for('status') }}'">statusPage</button>
+        <button onclick="location.href='{{ url_for('shutdown') }}'">shutdown</button>
+    </div>
 </body>
+
 </html>
