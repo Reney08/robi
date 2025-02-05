@@ -20,7 +20,6 @@ scale = Scale()
 # Ensure stepper motor is initialized
 if args.quick:
     stepper.load_positions()  # Load max_pos from positions.json
-    stepper.move_to_position(stepper.nullPos + 20)
     stepper.quick_init()
     stepper.initialized = True
 else:
