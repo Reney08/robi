@@ -29,13 +29,13 @@
 <body>
     <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; padding-top: 80px;">
         {% for cocktail in cocktails %}
-        <div class="box" href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}>
+        <a class="box" href="{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}>
             <center>
                 <br>
                 <a class="getränketitel">
                 </a>
             </center>
-        </div>
+        </a>
         {% endfor %}
     </div>
 
