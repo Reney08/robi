@@ -16,6 +16,7 @@
         <h2>Status</h2>
         <p>Current Position: {{ status.current_position }}</p>
         <p>Max Position: {{ status.max_position }}</p>
+        <p>Null Position: {{ status.null_position }}</p>
         <p>Is Active: {{ status.is_active }}</p>
         <button onclick="location.href='{{ url_for('stepper_move') }}'">Move Stepper by Steps</button>
         <button onclick="location.reload()">Refresh Status</button>
