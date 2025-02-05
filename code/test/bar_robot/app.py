@@ -66,8 +66,11 @@ def scale_status():
 @app.route('/servo/move', methods=['POST'])
 def move_servo():
     position = request.form['position']
-    servo.move_to_position(position)
-    return redirect(url_for('servo_status'))
+    if position == 'active':
+        servo.move_to_active()
+    elif position == 'inactive':
+        servo.move_to_inactive()
+    return redirect(url_for('servo_status')
 
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
