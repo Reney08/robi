@@ -36,6 +36,11 @@ class ServoMotor:
         self.logger.info("Moving servo to waiting position")
         self.pwm.set_pwm(0, 0, self.waiting_pos)
         time.sleep(1)
+        
+    def get_status(self):
+        return {
+            'current_position': self.current_position
+        }
 
     def shutdown(self):
         self.logger.info("Shutting down servo motor")
