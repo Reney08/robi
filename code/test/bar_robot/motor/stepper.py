@@ -88,6 +88,9 @@ class StepperMotor:
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
     def quick_init(self):
+        # Move the servo to the inactive position to avoid collisions
+        self.servo.move_to_inactive()
+        time.sleep(1)
         # Move to the left until the left limit switch is triggered
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
