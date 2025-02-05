@@ -179,7 +179,7 @@ class StepperMotor:
 
     def load_max_pos(self):
         try:
-            self.maxPos = self.positions['max_pos']
+            self.maxPos = self.positions['maxPos']
         except KeyError:
             print("max_pos not found in positions.json. Using default maxPos.")
             self.maxPos = 0  # Set a default value or handle appropriately
