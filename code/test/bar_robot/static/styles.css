@@ -141,6 +141,9 @@ button:hover {
     letter-spacing: 1px;
     text-decoration: none;
 }
+.getränketitel:hover {
+    text-decoration: none;
+}
 
 .infobutton {
     color: white;
