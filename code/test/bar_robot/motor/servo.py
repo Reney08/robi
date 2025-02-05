@@ -32,6 +32,11 @@ class ServoMotor:
         self.pwm.set_pwm(0, 0, self.inactive_pos)
         time.sleep(1)
 
+    def move_to_waiting(self):
+        self.logger.info("Moving servo to waiting position")
+        self.pwm.set_pwm(0, 0, self.waiting_pos)
+        time.sleep(1)
+
     def get_status(self):
         return {
             'current_position': 'active' if self.pwm.get_pwm(0) == self.active_pos else 'inactive'
