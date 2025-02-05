@@ -13,12 +13,40 @@
         <h1>Move Stepper</h1>
     </header>
     <main>
+        <h2>Current Null Position: {{ null_position }}</h2>
+        <h2>Current Max Position: {{ max_position }}</h2>
         <form action="{{ url_for('stepper_move') }}" method="post">
+            <input type="hidden" name="action" value="move_and_save">
             <label for="steps">Steps:</label>
             <input type="number" id="steps" name="steps" required>
             <label for="position_name">Position Name:</label>
             <input type="text" id="position_name" name="position_name" required>
             <button type="submit">Move and Save Position</button>
+        </form>
+        <h2>Edit or Delete Positions</h2>
+        <form action="{{ url_for('stepper_move') }}" method="post">
+            <input type="hidden" name="action" value="edit_position">
+            <label for="position_name">Select Position:</label>
+            <select id="position_name" name="position_name" required>
+                {% for name, value in positions.items() %}
+                    <option value="{{ name }}">{{ name }} ({{ value }})</option>
+                {% endfor %}
+            </select>
+            <label for="new_value">New Value:</label>
+            <input type="number" id="new_value" name="new_value" required>
+            <button type="submit">Edit Position</button>
+        </form>
+        <form action="{{ url_for('stepper_move') }}" method="post">
+            <input type="hidden" name="action" value="delete_position">
+            <label for="position_name">Select Position:</label>
+            <select id="position_name" name="position_name" required>
+                {% for name, value in positions.items() %}
+                    {% if name not in ['finished', 'nullPos', 'maxPos'] %}
+                        <option value="{{ name }}">{{ name }} ({{ value }})</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit">Delete Position</button>
         </form>
     </main>
 </body>
