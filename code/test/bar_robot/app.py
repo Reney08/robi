@@ -70,7 +70,7 @@ def move_servo():
         servo.move_to_active()
     elif position == 'inactive':
         servo.move_to_inactive()
-    return redirect(url_for('servo_status')
+    return redirect(url_for('servo_status'))
 
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
