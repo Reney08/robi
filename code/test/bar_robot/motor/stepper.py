@@ -182,7 +182,7 @@ class StepperMotor:
         try:
             self.nullPos = self.positions['nullPos']
             self.maxPos = self.positions['maxPos']
-         except KeyError as e:
+        except KeyError as e:
             print(f"KeyError: {e} not found in positions.json. Using default values.")
             self.nullPos = 0
             self.maxPos = 0  # Set a default value or handle appropriately
