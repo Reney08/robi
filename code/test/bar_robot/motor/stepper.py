@@ -25,8 +25,6 @@ class StepperMotor:
         self.aktuellePos = 0
         self.maxPos = 0
         self.nullPos = 0
-        self.max_pos = 0
-        self.null_pos = 0
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
         self.load_available_cocktails()
@@ -67,8 +65,8 @@ class StepperMotor:
     def get_status(self):
         return {
             'current_position': self.aktuellePos,
-            'max_position': self.max_pos,
-            'null_position': self.null_pos,
+            'max_position': self.maxPos,
+            'null_position': self.nullPos,
             'is_active': GPIO.input(self.EN) == GPIO.LOW
         }
 
