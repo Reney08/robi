@@ -176,6 +176,13 @@ class StepperMotor:
         with open(self.available_cocktails_file, 'w') as f:
             json.dump(self.available_cocktails, f, indent=4)
 
+    def load_max_pos(self):
+        try:
+            self.maxPos = self.positions['max_pos']
+        except KeyError:
+            print("max_pos not found in positions.json. Using default maxPos.")
+            self.maxPos = 0  # Set a default value or handle appropriately
+
     def shutdown(self):
         self.logger.info("Shutting down stepper motor")
         GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
