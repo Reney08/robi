@@ -15,6 +15,7 @@
         </center>
     </header>
     <main>
+        <a>{{ cocktail }}</a>
         <img src="{{ url_for('static', filename='{{ cocktail }}.png') }}" class="c_pic" alt="{{ cocktail }} Picture">
         {% for ingredient in ingredients %}
         <div style="padding-top: 15px">
