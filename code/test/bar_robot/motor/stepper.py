@@ -28,6 +28,7 @@ class StepperMotor:
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
         self.load_available_cocktails()
+        self.load_positions()
         # self.init()
 
     def GPIOConfig(self):
@@ -83,7 +84,7 @@ class StepperMotor:
         if self.initialized:
             return
         # Move the servo to the inactive position to avoid collisions
-        print("Returning servo to inactive position...")
+        # print("Returning servo to inactive position...")
         self.servo.move_to_inactive()
         time.sleep(1)
 
@@ -116,7 +117,7 @@ class StepperMotor:
             position_name = step["position"]
             wait_time = step["wait_time"]
 
-            print("Returning servo to inactive position...")
+            # print("Returning servo to inactive position...")
             self.servo.move_to_inactive()
             time.sleep(1)
             
@@ -130,12 +131,12 @@ class StepperMotor:
                 time.sleep(1)
             
                 # Move the servo regardless of motor movement
-                print("Moving servo to active position...")
+                # print("Moving servo to active position...")
                 self.servo.move_to_active()
                 time.sleep(wait_time)  # Wait for the specified time
     
                 # Move servo back
-                print("Returning servo to inactive position...")
+                # print("Returning servo to inactive position...")
                 self.servo.move_to_inactive()
                 time.sleep(1)  # Wait for servo movement
             
@@ -143,13 +144,13 @@ class StepperMotor:
                 print(f"Invalid position in sequence: {position_name}")
                 
             if position_name == "finished":
-                print("Sequence completed. Returning to home position...")
+                # print("Sequence completed. Returning to home position...")
                 time.sleep(10)
                 self.servo.move_to_inactive()
                 self.move_to_position(self.nullPos + 20)
                 time.sleep(1)
-                print("Returned to Null position.")
-                print("Available Cocktails:")
+                # print("Returned to Null position.")
+                # print("Available Cocktails:")
                 for cocktail in self.available_cocktails:
                     print(f"- {cocktail}")
                 break
@@ -177,11 +178,13 @@ class StepperMotor:
         with open(self.available_cocktails_file, 'w') as f:
             json.dump(self.available_cocktails, f, indent=4)
 
-    def load_max_pos(self):
+    def load_positions(self):
         try:
+            self.nullPos = self.positions['nullPos']
             self.maxPos = self.positions['maxPos']
-        except KeyError:
-            print("max_pos not found in positions.json. Using default maxPos.")
+         except KeyError as e:
+            print(f"KeyError: {e} not found in positions.json. Using default values.")
+            self.nullPos = 0
             self.maxPos = 0  # Set a default value or handle appropriately
 
     def move_and_save_position(self, steps, position_name):
