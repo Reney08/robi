@@ -21,7 +21,7 @@ scale = Scale()
 if args.quick:
     stepper.load_positions()  # Load max_pos from positions.json
     stepper.move_to_position(stepper.nullPos + 20)
-    stepper.aktuellePos = 0
+    stepper.quick_init()
     stepper.initialized = True
 else:
     stepper.init()
