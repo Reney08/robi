@@ -142,7 +142,10 @@ class StepperMotor:
                 self.servo.move_to_inactive()
                 time.sleep(1)  # Wait for servo movement
             
-            elif position_name == "finished":
+            else: 
+                print(f"Invalid position in sequence: {position_name}")
+                
+            if position_name == "finished":
                 time.sleep(10)
                 self.servo.move_to_inactive()
                 self.move_to_position(self.standartPos)
@@ -150,9 +153,6 @@ class StepperMotor:
                 for cocktail in self.available_cocktails:
                     print(f"- {cocktail}")
                 break
-            
-            else: 
-                print(f"Invalid position in sequence: {position_name}")
         
     def load_positions(self):
         try:
