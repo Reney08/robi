@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Servo Positions - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
+        </a>
+        <h1>Edit Servo Positions</h1>
+    </header>
+    <main>
+        <form action="{{ url_for('update_servo_positions') }}" method="post">
+            <label for="inactive_pos">Inactive Position:</label>
+            <input type="number" id="inactive_pos" name="inactive_pos" required>
+            
+            <label for="active_pos">Active Position:</label>
+            <input type="number" id="active_pos" name="active_pos" required>
+            
+            <label for="waiting_pos">Waiting Position:</label>
+            <input type="number" id="waiting_pos" name="waiting_pos" required>
+            
+            <button type="submit">Update Positions</button>
+        </form>
+    </main>
+</body>
+</html>
