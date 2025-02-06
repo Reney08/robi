@@ -96,6 +96,8 @@ class StepperMotor:
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
     def quick_init(self):
+        if self.initialized:
+            return
         # Move the servo to the inactive position to avoid collisions
         self.servo.move_to_inactive()
         time.sleep(1)
@@ -106,6 +108,8 @@ class StepperMotor:
         self.move_to_position(self.standartPos)
         self.aktuellePos = 0
         time.sleep(1)
+        self.initialized = True
+
 
     def init(self):
         if self.initialized:
