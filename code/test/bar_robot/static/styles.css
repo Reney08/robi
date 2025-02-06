@@ -139,6 +139,7 @@ button:hover {
     text-shadow: -2px 2px 6px #0081C6;
     letter-spacing: 1px;
     text-decoration: none;
+    text-align: center;
 }
 
 .getränketitel:hover {
