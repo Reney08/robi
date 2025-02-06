@@ -43,6 +43,7 @@ main {
 h1, h2 {
     color: white;
     text-shadow: -2px 2px 6px #0081C6;
+    text-align: center
 }
 
 ul {
