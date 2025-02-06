@@ -16,7 +16,7 @@
         <h2>Status</h2>
         <p>Current Position: {{ status.current_position }}</p>
         <h2>Move Servo</h2>
-        <form action="{{ url_for('move_servo') }}" method="post">
+        <form action="{{ url_for('servo_move') }}" method="post">
             <label for="position">Position:</label>
             <select id="position" name="position" required>
                 <option value="active">Active</option>
