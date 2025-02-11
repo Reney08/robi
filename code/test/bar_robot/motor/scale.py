@@ -1,13 +1,22 @@
 import RPi.GPIO as GPIO
-from .scale_hx711 import HX711
+from hx711 import HX711
 
 class Scale:
     def __init__(self, clock_pin, data_pin, calibration_factor):
         self.hx711 = HX711(clock_pin, data_pin)
-        self.hx711.tare()
         self.calibration_factor = calibration_factor
+        self.active = False  # Ensure scale is inactive by default
+
+    def activate(self):
+        self.hx711.tare()
+        self.active = True
+
+    def deactivate(self):
+        self.active = False
 
     def get_weight(self):
+        if not self.active:
+            return None
         weight = self.hx711.read_average(3) * self.calibration_factor
         if weight < 0:
             weight = 0
