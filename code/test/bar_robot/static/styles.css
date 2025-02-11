@@ -201,6 +201,9 @@ button:hover {
     font-size: 20px; /* Increase font size */
     transition: background-color 0.3s ease;
     margin-top: 20px; /* Add some space above the button */
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .mixbutton:hover {
