@@ -7,7 +7,7 @@ class ServoMotor:
     def __init__(self):
         # Initialize the ServoMotor with logger, PWM, and positions from JSON file
         self.logger = setup_logger()
-        self.settingsFileHandler = FileHandler('./bar_robot/settings.json')
+        self.settingsFileHandler = FileHandler()
         self.settings = self.settingsFileHandler.readJson()
         
         self.pulse_min = self.settings.get('pulse_min')
