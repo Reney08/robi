@@ -6,6 +6,7 @@ from logger import setup_logger
 from motor.servo import ServoMotor
 
 class StepperMotor:
+    # Define GPIO pins and timing constants
     STEP = 17
     DIR = 27
     EN = 23
@@ -15,6 +16,7 @@ class StepperMotor:
     uS = 0.000001
 
     def __init__(self):
+        # Initialize the StepperMotor with logger, GPIO configuration, and file handlers
         self.logger = setup_logger()
         self.GPIOConfig()
         self.positionsFileHandler = FileHandler('./json/positions.json')
@@ -33,6 +35,7 @@ class StepperMotor:
         # self.init()
 
     def GPIOConfig(self):
+        # Configure GPIO settings
         GPIO.setmode(GPIO.BCM)
         GPIO.setwarnings(False)
         GPIO.setup(self.STEP, GPIO.OUT)
@@ -44,6 +47,7 @@ class StepperMotor:
         self.logger.info("Setup GPIO")
         
     def get_status(self):
+        # Return the current status of the stepper motor
         return {
             'current_position': self.aktuellePos,
             'max_position': self.maxPos,
@@ -52,12 +56,15 @@ class StepperMotor:
         }
         
     def getSchalterRechtsStatus(self):
+        # Check the status of the right limit switch
         return GPIO.input(self.schalterRechtsPin) == 1
 
     def getSchalterLinksStatus(self):
+        # Check the status of the left limit switch
         return GPIO.input(self.schalterLinksPin) == 1
 
     def moveRelPos(self, relative_steps, aktPos):
+        # Move the stepper motor by a relative number of steps
         time.sleep(1)
         self.servo.move_to_inactive()
         
@@ -77,6 +84,7 @@ class StepperMotor:
         self.aktuellePos = aktPos
 
     def move_to_position(self, target_steps):
+        # Move the stepper motor to an absolute position
         self.servo.move_to_inactive()
         
         relative_steps = target_steps - self.aktuellePos
@@ -87,6 +95,7 @@ class StepperMotor:
             self.servo.move_to_waiting()
 
     def initMoveMotor(self, direction, stop_condition):
+        # Move the motor in a specified direction until a stop condition is met
         GPIO.output(self.DIR, direction)
         while not stop_condition():
             GPIO.output(self.STEP, GPIO.HIGH)
@@ -96,25 +105,22 @@ class StepperMotor:
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
     def quick_init(self):
+        # Quickly initialize the stepper motor
         if self.initialized:
             return
-        # Move the servo to the inactive position to avoid collisions
         self.servo.move_to_inactive()
         time.sleep(1)
-        # Move to the left until the left limit switch is triggered
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
-        # Move to standartPos
         self.move_to_position(self.standartPos)
         self.aktuellePos = 0
         time.sleep(1)
         self.initialized = True
 
-
     def init(self):
+        # Fully initialize the stepper motor
         if self.initialized:
             return
-        # Move the servo to the inactive position to avoid collisions
         self.servo.move_to_inactive()
         time.sleep(1)
 
@@ -137,6 +143,7 @@ class StepperMotor:
         self.initialized = True
 
     def execute_sequence(self, sequence):
+        # Execute a sequence of movements
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
@@ -169,6 +176,7 @@ class StepperMotor:
                 break
             
     def load_positions(self):
+        # Load positions from the JSON file
         try:
             self.nullPos = self.positions['nullPos']
             self.maxPos = self.positions['maxPos']
@@ -180,28 +188,32 @@ class StepperMotor:
             self.standartPos = 20
             
     def move_and_save_position(self, steps, position_name):
+        # Move to a position and save it
         target_position = self.aktuellePos + steps
         self.move_to_position(target_position)
         self.positions[position_name] = self.aktuellePos
         self.save_positions()
     
     def save_positions(self):
+        # Save positions to the JSON file
         with open('./json/positions.json', 'w') as f:
             json.dump(self.positions, f, indent=4)
 
     def edit_position(self, position_name, new_value):
+        # Edit an existing position
         if position_name not in ['finished', 'nullPos', 'maxPos']:
             self.positions[position_name] = new_value
             self.save_positions()
             self.move_to_position(new_value)
 
     def delete_position(self, position_name):
+        # Delete a position
         if position_name not in ['finished', 'nullPos', 'maxPos']:
             del self.positions[position_name]
             self.save_positions()
 
-
     def load_sequence(self, cocktail_name):
+        # Load a sequence from a JSON file
         sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
         try:
             with open(sequence_file, 'r') as f:
@@ -212,6 +224,7 @@ class StepperMotor:
             return None
 
     def load_available_cocktails(self):
+        # Load available cocktails from a JSON file
         try:
             with open(self.available_cocktails_file, 'r') as f:
                 self.available_cocktails = json.load(f)
@@ -221,11 +234,11 @@ class StepperMotor:
             self.save_available_cocktails()
 
     def save_available_cocktails(self):
+        # Save available cocktails to a JSON file
         with open(self.available_cocktails_file, 'w') as f:
             json.dump(self.available_cocktails, f, indent=4)
 
     def shutdown(self):
+        # Shutdown the stepper motor and clean up
         self.logger.info("Shutting down stepper motor")
-        GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
-        self.servo.move_to_inactive()  # Ensure the servo is in the inactive position
-        self.logger.info("Stepper motor shutdown complete")
+        GPIO.output(self
