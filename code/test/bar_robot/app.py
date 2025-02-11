@@ -49,7 +49,7 @@ def selected_cocktail(selected_cocktail):
 @app.route('/start_mixing', methods=['POST'])
 def start_mixing():
     cocktail = request.form['cocktail']
-    with open(f'./json/{cocktail}.json') as f:
+    with open(f'./json/cocktails/{cocktail}.json') as f:
         ingredients = json.load(f)
     
     sequence = []
