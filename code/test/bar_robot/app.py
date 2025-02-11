@@ -6,6 +6,7 @@ from motor.scale import Scale
 import json
 import argparse
 import os
+import glob
 
 app = Flask(__name__)
 
@@ -32,18 +33,18 @@ else:
 
 @app.route('/')
 def index():
-    with open('./json/available_cocktails.json') as f:
-        cocktails = json.load(f)
+    cocktail_files = glob.glob('./json/cocktails/*.json')
+    cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
     return render_template('index.html', cocktails=cocktails)
 
 @app.route('/<selected_cocktail>')
 def selected_cocktail(selected_cocktail):
-    ingredients_file = f'./json/ingredients/{selected_cocktail}_ingredients.json'
+    ingredients_file = f'./json/cocktails/{selected_cocktail}.json'
     if os.path.exists(ingredients_file):
         with open(ingredients_file) as f:
             ingredients = json.load(f)
     else:
-        ingredients = []
+        ingredients = {}
     return render_template('selected_cocktail.html', cocktail=selected_cocktail, ingredients=ingredients)
 
 @app.route('/start_mixing', methods=['POST'])
