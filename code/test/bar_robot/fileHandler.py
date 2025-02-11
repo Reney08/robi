@@ -2,9 +2,9 @@ import json
 import os
 
 class FileHandler:
-    def __init__(self, filepath):
+    def __init__(self):
         # Initialize the FileHandler with the given file path
-        self.filepath = filepath
+        self.filepath = 'settings.json'
 
     def readJson(self):
         try:
