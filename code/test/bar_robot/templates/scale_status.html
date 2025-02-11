@@ -11,10 +11,28 @@
                     if (data.weight !== undefined) {
                         document.getElementById('weight').innerText = data.weight + ' g';
                     } else {
-                        document.getElementById('weight').innerText = 'Scale is not activated.';
+                        document.getElementById('weight').innerText = data.error;
                     }
                 })
                 .catch(error => console.error('Error fetching weight:', error));
+        }
+
+        function activateScale() {
+            fetch('/scale/activate', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = data.status;
+                })
+                .catch(error => console.error('Error activating scale:', error));
+        }
+
+        function deactivateScale() {
+            fetch('/scale/deactivate', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = data.status;
+                })
+                .catch(error => console.error('Error deactivating scale:', error));
         }
 
         setInterval(fetchWeight, 1000); // Fetch weight every second
@@ -23,5 +41,8 @@
 <body>
     <h1>Scale Status</h1>
     <p>Current Weight: <span id="weight">Loading...</span></p>
+    <p>Status: <span id="status">Inactive</span></p>
+    <button onclick="activateScale()">Activate Scale</button>
+    <button onclick="deactivateScale()">Deactivate Scale</button>
 </body>
 </html>
