@@ -82,11 +82,9 @@ def servo_status():
 
 @app.route('/scale/weight')
 def scale_weight():
-    if args.scale:
-        weight = scale.get_weight()
-        return jsonify({'weight': weight})
-    return jsonify({'error': 'Scale is not activated.'})
-
+    weight = scale.get_weight()
+    return jsonify({'weight': weight})
+   
 @app.route('/servo/move', methods=['GET', 'POST'])
 def servo_move():
     if request.method == 'POST':
