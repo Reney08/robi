@@ -6,7 +6,7 @@ from .scale_hx711 import HX711
 class Scale:
     def __init__(self):
         # Initialize the Scale with settings from the settings file
-        self.settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+        self.settingsFileHandler = FileHandler('./bar_robot/settings.json')
         self.settings = self.settingsFileHandler.readSettings()
         
         self.clock_pin = self.settings.get('clock_pin')
