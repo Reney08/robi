@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO
 import threading
 import time
 
-from hx711 import HX711
+from .scale_hx711 import HX711
 
 class Scale:
     def __init__(self, clock_pin, data_pin, calibration_factor):
