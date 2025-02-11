@@ -31,6 +31,8 @@ class FileHandler:
         except FileNotFoundError:
             # If the file is not found, print a warning and return an empty dictionary
             print(f"Warning: {self.filepath} not found. Creating default settings.")
+            self.create_default_settings()
+            settings = self.readSettings()
         return settings
 
     def _convert_value(self, value):
