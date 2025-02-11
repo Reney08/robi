@@ -140,22 +140,22 @@ class StepperMotor:
         for step in sequence:
             position_name = step["position"]
             wait_time = step["wait_time"]
-
+    
             self.servo.move_to_inactive()
             time.sleep(1)
             
             if position_name in self.positions:
-                target_steps = self.positions[position_name]  # Lookup the position in positions.json
+                target_steps = self.positions[position_name]
                 if target_steps != self.aktuellePos:
                     self.move_to_position(target_steps)
                 
                 time.sleep(1)
             
                 self.servo.move_to_active()
-                time.sleep(wait_time)  # Wait for the specified time
+                time.sleep(wait_time)
     
                 self.servo.move_to_inactive()
-                time.sleep(1)  # Wait for servo movement
+                time.sleep(1)
             
             else: 
                 print(f"Invalid position in sequence: {position_name}")
@@ -166,10 +166,8 @@ class StepperMotor:
                 self.servo.move_to_inactive()
                 self.move_to_position(self.standartPos)
                 time.sleep(1)
-                for cocktail in self.available_cocktails:
-                    print(f"- {cocktail}")
                 break
-        
+            
     def load_positions(self):
         try:
             self.nullPos = self.positions['nullPos']
