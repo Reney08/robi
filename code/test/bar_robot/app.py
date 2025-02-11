@@ -15,6 +15,10 @@ parser = argparse.ArgumentParser(description='Bar Robot Application')
 parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to Standartposition')
 args = parser.parse_args()
 
+# Initialize FileHandler for settings
+settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+settings = settingsFileHandler.readSettings()
+
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor()
