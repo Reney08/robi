@@ -4,6 +4,40 @@
     <meta charset="UTF-8">
     <title>Scale Status - Bar Robot</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        function fetchWeight() {
+            fetch('/scale/weight')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.weight !== undefined) {
+                        document.getElementById('weight').innerText = data.weight + ' g';
+                    } else {
+                        document.getElementById('weight').innerText = data.error;
+                    }
+                })
+                .catch(error => console.error('Error fetching weight:', error));
+        }
+
+        function activateScale() {
+            fetch('/scale/activate', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = data.status;
+                })
+                .catch(error => console.error('Error activating scale:', error));
+        }
+
+        function deactivateScale() {
+            fetch('/scale/deactivate', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status').innerText = data.status;
+                })
+                .catch(error => console.error('Error deactivating scale:', error));
+        }
+
+        setInterval(fetchWeight, 1000); // Fetch weight every second
+    </script>
 </head>
 <body>
     <header>
@@ -14,7 +48,11 @@
     </header>
     <main>
         <h2>Status</h2>
-        <p>Weight: {{ status.weight }}</p>
+        <p>Current Weight: <span id="weight">Loading...</span></p>
+        <p>Status: <span id="status">Inactive</span></p>
+        <button onclick="activateScale()">Activate Scale</button>
+        <button onclick="deactivateScale()">Deactivate Scale</button>
+        <button onclick="location.reload()">Refresh Status</button>
     </main>
 </body>
 </html>
