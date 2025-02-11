@@ -28,14 +28,14 @@
 
 <body>
     <div style="display: flex; flex-wrap: wrap; gap: 40px; justify-content: center; padding-top: 80px;">
-        {% for cocktail in cocktails %}
+    {% for cocktail in cocktails %}
         <div class="box" onclick="location.href='{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}'">
             <center>
                 <br>
                 <a class="getränketitel" onclick="location.href='{{ url_for('selected_cocktail', selected_cocktail=cocktail) }}'">{{ cocktail }}</a>
             </center>
         </div>
-        {% endfor %}
+    {% endfor %}
     </div>
 
     <div class="bottom-buttons">
