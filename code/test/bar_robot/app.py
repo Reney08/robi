@@ -6,6 +6,7 @@ from motor.scale import Scale
 import json
 import argparse
 import os
+import glob
 
 app = Flask(__name__)
 
@@ -19,6 +20,9 @@ stepper = StepperMotor()
 servo = ServoMotor()
 scale = Scale()
 
+with open('./json/liquids_mapping.json') as f:
+    liquids = json.load(f)
+    
 # Ensure stepper motor is initialized
 if args.quick:
     stepper.load_positions()  # Load max_pos from positions.json
@@ -29,28 +33,38 @@ else:
 
 @app.route('/')
 def index():
-    with open('./json/available_cocktails.json') as f:
-        cocktails = json.load(f)
+    cocktail_files = glob.glob('./json/cocktails/*.json')
+    cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
     return render_template('index.html', cocktails=cocktails)
 
 @app.route('/<selected_cocktail>')
 def selected_cocktail(selected_cocktail):
-    ingredients_file = f'./json/ingredients/{selected_cocktail}_ingredients.json'
+    ingredients_file = f'./json/cocktails/{selected_cocktail}.json'
     if os.path.exists(ingredients_file):
         with open(ingredients_file) as f:
             ingredients = json.load(f)
     else:
-        ingredients = []
+        ingredients = {}
     return render_template('selected_cocktail.html', cocktail=selected_cocktail, ingredients=ingredients)
 
 @app.route('/start_mixing', methods=['POST'])
 def start_mixing():
     cocktail = request.form['cocktail']
-    sequence = stepper.load_sequence(cocktail)
-    if sequence:
-        stepper.execute_sequence(sequence)
-        return redirect(url_for('index'))
-    return redirect(url_for('selected_cocktail', selected_cocktail=cocktail))
+    with open(f'./json/cocktails/{cocktail}.json') as f:
+        ingredients = json.load(f)
+    
+    sequence = []
+    for ingredient, volume in ingredients.items():
+        if volume > 0:
+            position = liquids[ingredient]
+            times = volume // 25
+            for _ in range(times):
+                sequence.append({"position": position, "wait_time": 5})
+    
+    sequence.append({"position": "finished", "wait_time": 10})
+    
+    stepper.execute_sequence(sequence)
+    return redirect(url_for('index'))
     
 @app.route('/status')
 def status():
