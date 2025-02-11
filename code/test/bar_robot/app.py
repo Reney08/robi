@@ -80,6 +80,11 @@ def servo_status():
     status = servo.get_status()
     return render_template('servo_status.html', status=status)
 
+@app.route('/scale/status')
+def scale_status():
+    weight = scale.get_weight()
+    return render_template('scale_status.html', weight=weight)
+
 @app.route('/scale/weight')
 def scale_weight():
     if args.scale:
