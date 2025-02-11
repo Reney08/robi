@@ -5,6 +5,7 @@ from .scale_hx711 import HX711
 
 class Scale:
     def __init__(self, clock_pin, data_pin, calibration_factor):
+        # Initialize the HX711 scale with the given clock and data pins
         self.hx711 = HX711(clock_pin, data_pin)
         self.calibration_factor = calibration_factor
         self.active = False
@@ -13,6 +14,7 @@ class Scale:
         self.thread_stop_event = threading.Event()
 
     def activate(self):
+        # Tare the scale and start the weight update thread
         self.hx711.tare()
         self.active = True
         self.thread_stop_event.clear()
@@ -21,6 +23,7 @@ class Scale:
             self.thread.start()
 
     def deactivate(self):
+        # Stop the weight update thread and deactivate the scale
         self.active = False
         self.thread_stop_event.set()
         if self.thread is not None:
@@ -28,6 +31,7 @@ class Scale:
             self.thread = None
 
     def _update_weight(self):
+        # Continuously update the weight while the scale is active
         while not self.thread_stop_event.is_set():
             weight = self.hx711.read_average(3) * self.calibration_factor
             if weight < 0:
@@ -36,11 +40,13 @@ class Scale:
             time.sleep(1)
 
     def get_weight(self):
+        # Return the current weight if the scale is active
         if not self.active:
             return None
         return self.weight
 
     def calibrate(self):
+        # Calibrate the scale using a known weight
         print("Place a known weight on the scale (e.g., 1000g).")
         input("Press Enter when the weight is placed.")
         raw_value = self.hx711.read_average()
@@ -50,5 +56,6 @@ class Scale:
         print(f"Calibration factor: {self.calibration_factor}")
 
     def shutdown(self):
+        # Deactivate the scale and clean up GPIO resources
         self.deactivate()
         GPIO.cleanup()
