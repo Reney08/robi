@@ -7,7 +7,7 @@ class Scale:
     def __init__(self):
         # Initialize the Scale with settings from the settings file
         self.settingsFileHandler = FileHandler('./bar_robot/settings.json')
-        self.settings = self.settingsFileHandler.readSettings()
+        self.settings = self.settingsFileHandler.readJson()
         
         self.clock_pin = self.settings.get('clock_pin')
         self.data_pin = self.settings.get('data_pin')
