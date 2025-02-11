@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 class HX711:
     def __init__(self, clock_pin, data_pin, gain=128):
         # Initialize the HX711 with the given clock and data pins and set up GPIO
-        self.settingsFileHandler = FileHandler('./bar_robot/settings.json')
+        self.settingsFileHandler = FileHandler()
         self.settings = self.settingsFileHandler.readJson()
         
         self.clock_pin = clock_pin
