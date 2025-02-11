@@ -14,7 +14,6 @@ class FileHandler:
         except FileNotFoundError:
             # If the file is not found, print a warning and create default settings
             print(f"Warning: {self.filepath} not found. Creating default file.")
-            self.create_default_settings()
             return self.readJson()
 
     def writeJson(self, data):
