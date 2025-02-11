@@ -184,10 +184,27 @@ button:hover {
 .c_pic {
     padding-top: 50px;
     padding-left: 50px;
-    height: 500px;
-    width: auto;
+    height: 300px; /* Set a fixed height */
+    width: 300px;  /* Set a fixed width */
+    object-fit: cover; /* Crop the image to fit the container */
     display: inline-block;
     position: fixed;
+}
+
+.mixbutton {
+    background-color: #0081C6;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 15px 30px; /* Increase padding for a larger button */
+    font-size: 20px; /* Increase font size */
+    transition: background-color 0.3s ease;
+    margin-top: 20px; /* Add some space above the button */
+}
+
+.mixbutton:hover {
+    background-color: #005380;
 }
 
 .dots {
@@ -267,14 +284,4 @@ button:hover {
 
 .buttons button:hover {
     background-color: #005380;
-}
-
-.c_pic {
-    padding-top: 50px;
-    padding-left: 50px;
-    height: 300px; /* Set a fixed height */
-    width: 300px;  /* Set a fixed width */
-    object-fit: cover; /* Crop the image to fit the container */
-    display: inline-block;
-    position: fixed;
 }
