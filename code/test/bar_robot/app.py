@@ -80,10 +80,12 @@ def servo_status():
     status = servo.get_status()
     return render_template('servo_status.html', status=status)
 
-@app.route('/scale/status')
-def scale_status():
-    status = scale.get_status()
-    return render_template('scale_status.html', status=status)
+@app.route('/scale/weight')
+def scale_weight():
+    if args.scale:
+        weight = scale.get_weight()
+        return jsonify({'weight': weight})
+    return jsonify({'error': 'Scale is not activated.'})
 
 @app.route('/servo/move', methods=['GET', 'POST'])
 def servo_move():
