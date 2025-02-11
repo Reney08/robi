@@ -80,6 +80,11 @@ def servo_status():
     status = servo.get_status()
     return render_template('servo_status.html', status=status)
 
+@app.route('/scale/status')
+def scale_status():
+    weight = scale.get_weight()
+    return render_template('scale_status.html', weight=weight)
+
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
     if request.method == 'POST':
@@ -103,6 +108,29 @@ def stepper_move():
             return "Bad Request: Missing form data.", 400
 
     return render_template('stepper_move.html', null_position=stepper.nullPos, max_position=stepper.maxPos, positions=stepper.positions)
+
+@app.route('/scale/weight')
+def scale_weight():
+    if args.scale:
+        weight = scale.get_weight()
+        if weight is not None:
+            return jsonify({'weight': weight})
+        return jsonify({'error': 'Scale is inactive.'})
+    return jsonify({'error': 'Scale is not activated.'})
+
+@app.route('/scale/activate', methods=['POST'])
+def scale_activate():
+    if args.scale:
+        scale.activate()
+        return jsonify({'status': 'Scale activated'})
+    return jsonify({'error': 'Scale is not activated.'})
+
+@app.route('/scale/deactivate', methods=['POST'])
+def scale_deactivate():
+    if args.scale:
+        scale.deactivate()
+        return jsonify({'status': 'Scale deactivated'})
+    return jsonify({'error': 'Scale is not activated.'})
 
 @app.route('/shutdown')
 def shutdown():
