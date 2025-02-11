@@ -268,3 +268,13 @@ button:hover {
 .buttons button:hover {
     background-color: #005380;
 }
+
+.c_pic {
+    padding-top: 50px;
+    padding-left: 50px;
+    height: 300px; /* Set a fixed height */
+    width: 300px;  /* Set a fixed width */
+    object-fit: cover; /* Crop the image to fit the container */
+    display: inline-block;
+    position: fixed;
+}
