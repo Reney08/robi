@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scale Status</title>
+    <title>Scale Status - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <script>
         function fetchWeight() {
             fetch('/scale/weight')
@@ -39,10 +40,19 @@
     </script>
 </head>
 <body>
-    <h1>Scale Status</h1>
-    <p>Current Weight: <span id="weight">Loading...</span></p>
-    <p>Status: <span id="status">Inactive</span></p>
-    <button onclick="activateScale()">Activate Scale</button>
-    <button onclick="deactivateScale()">Deactivate Scale</button>
+    <header>
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
+        </a>
+        <h1>Scale Status</h1>
+    </header>
+    <main>
+        <h2>Status</h2>
+        <p>Current Weight: <span id="weight">Loading...</span></p>
+        <p>Status: <span id="status">Inactive</span></p>
+        <button onclick="activateScale()">Activate Scale</button>
+        <button onclick="deactivateScale()">Deactivate Scale</button>
+        <button onclick="location.reload()">Refresh Status</button>
+    </main>
 </body>
 </html>
