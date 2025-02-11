@@ -43,7 +43,7 @@ main {
 h1, h2 {
     color: white;
     text-shadow: -2px 2px 6px #0081C6;
-    text-align: center
+    text-align: center;
 }
 
 ul {
@@ -284,5 +284,48 @@ button:hover {
 }
 
 .buttons button:hover {
+    background-color: #005380;
+}
+
+/* Additional styles for new pages */
+.page-container {
+    padding: 2rem;
+    background-color: black;
+    color: white;
+    border: 3px solid #0081C6;
+    border-radius: 10px;
+    box-shadow: 0 0 50px #005380;
+    margin: 2rem auto;
+    max-width: 800px;
+}
+
+.page-header {
+    font-size: 36px;
+    text-align: center;
+    text-shadow: -2px 2px 6px #0081C6;
+    margin-bottom: 1rem;
+}
+
+.page-content {
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.page-button {
+    display: block;
+    width: 200px;
+    margin: 1rem auto;
+    padding: 10px 20px;
+    background-color: #0081C6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.page-button:hover {
     background-color: #005380;
 }

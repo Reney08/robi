@@ -18,7 +18,7 @@ args = parser.parse_args()
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor()
-scale = Scale()
+scale = Scale(clock_pin=6, data_pin=5, calibration_factor=-0.0009405187713438978)
 
 with open('./json/liquids_mapping.json') as f:
     liquids = json.load(f)

@@ -1,78 +1,54 @@
 import RPi.GPIO as GPIO
-import spidev
+import threading
 import time
+from .scale_hx711 import HX711
 
 class Scale:
-    DT_PIN = 5
-    CLK_PIN = 6
+    def __init__(self, clock_pin, data_pin, calibration_factor):
+        self.hx711 = HX711(clock_pin, data_pin)
+        self.calibration_factor = calibration_factor
+        self.active = False
+        self.weight = 0
+        self.thread = None
+        self.thread_stop_event = threading.Event()
 
-    def __init__(self):
-        self.spi = spidev.SpiDev()
-        self.spi.open(0, 0)
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(self.DT_PIN, GPIO.IN)
-        GPIO.setup(self.CLK_PIN, GPIO.OUT)
-        self.zero_value = self.zero_scale()
-        self.kalibrierungsfaktor = self.calibrate()
+    def activate(self):
+        self.hx711.tare()
+        self.active = True
+        self.thread_stop_event.clear()
+        if self.thread is None:
+            self.thread = threading.Thread(target=self._update_weight)
+            self.thread.start()
 
-    def read_hx711(self):
-        try:
-            GPIO.output(self.CLK_PIN, False)
-            time.sleep(0.1)  # Ensure the clock pin is low for a moment
-            data = 0
-            for _ in range(24):
-                GPIO.output(self.CLK_PIN, True)
-                time.sleep(0.0001)  # Increase delay
-                GPIO.output(self.CLK_PIN, False)
-                data = (data << 1) | GPIO.input(self.DT_PIN)
-            
-            GPIO.output(self.CLK_PIN, True)
-            time.sleep(0.001)
-            GPIO.output(self.CLK_PIN, False)
+    def deactivate(self):
+        self.active = False
+        self.thread_stop_event.set()
+        if self.thread is not None:
+            self.thread.join()
+            self.thread = None
 
-            # Convert to 2's complement
-            if data & 0x800000:
-                data = -(0x1000000 - data)
-
-            return data
-
-        except Exception as e:
-            print(f"Fehler beim Lesen des HX711: {e}")
-            return 0
-
-    def calibrate(self):
-        try:
-            print("Lege ein bekanntes Gewicht auf die Waage (z.B. 1000g).")
-            input("Drucke Enter, wenn das Gewicht platziert ist.")
-            rohwert = self.read_hx711()
-            print(f"Rohwert vor Kalibrierung: {rohwert}") #debug
-            bekanntes_gewicht = float(input("Gib das tatsachliche Gewicht in Gramm ein: ")) #Eingabe des Gewichts
-            kalibrierungsfaktor = bekanntes_gewicht / rohwert
-            print(f"Kalibrierungsfaktor: {kalibrierungsfaktor}")
-            return kalibrierungsfaktor
-        except ValueError:
-            print("Ungultige Eingabe. Bitte eine Zahl eingeben.")
-            return None
-        except Exception as e:
-            print(f"Fehler bei Kalibrierung: {e}")
-            return None
-
-    def zero_scale(self):
-        print("Zeroing the scale...")
-        zero_values = []
-        for _ in range(10):  # Read 10 times for averaging
-            zero_values.append(self.read_hx711())
-            time.sleep(0.1)
-        zero_value = sum(zero_values) / len(zero_values)
-        return zero_value
+    def _update_weight(self):
+        while not self.thread_stop_event.is_set():
+            weight = self.hx711.read_average(3) * self.calibration_factor
+            if weight < 0:
+                weight = 0
+            self.weight = int(weight)
+            time.sleep(1)
 
     def get_weight(self):
-        rohwert = self.read_hx711()
-        if rohwert != 0:
-            gewicht = (rohwert - self.zero_value) * self.kalibrierungsfaktor
-            return gewicht
-        return 0
+        if not self.active:
+            return None
+        return self.weight
+
+    def calibrate(self):
+        print("Place a known weight on the scale (e.g., 1000g).")
+        input("Press Enter when the weight is placed.")
+        raw_value = self.hx711.read_average()
+        print(f"Raw value before calibration: {raw_value}")  # Debug
+        known_weight = float(input("Enter the actual weight in grams: "))  # Input the weight
+        self.calibration_factor = known_weight / raw_value
+        print(f"Calibration factor: {self.calibration_factor}")
 
     def shutdown(self):
+        self.deactivate()
         GPIO.cleanup()
-        self.spi.close()
