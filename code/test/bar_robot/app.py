@@ -18,7 +18,7 @@ parser.add_argument('-quick', action='store_true', help='Skip initialization and
 args = parser.parse_args()
 
 # Initialize FileHandler for settings
-settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+settingsFileHandler = FileHandler('/bar_robot/settings.json')
 settings = settingsFileHandler.readSettings()
 
 # Initialize motors
