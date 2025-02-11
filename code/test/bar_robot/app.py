@@ -19,7 +19,7 @@ args = parser.parse_args()
 
 # Initialize FileHandler for settings
 settingsFileHandler = FileHandler('/bar_robot/settings.json')
-settings = settingsFileHandler.readSettings()
+settings = settingsFileHandler.readJson()
 
 # Initialize motors
 stepper = StepperMotor()
