@@ -9,7 +9,7 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.weight !== undefined) {
-                        document.getElementById('weight').innerText = data.weight.toFixed(2) + ' g';
+                        document.getElementById('weight').innerText = data.weight + ' g';
                     } else {
                         document.getElementById('weight').innerText = 'Scale is not activated.';
                     }
