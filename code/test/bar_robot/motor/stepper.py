@@ -18,6 +18,8 @@ class StepperMotor:
         self.schalterRechtsPin = self.settings.get('schalterRechtsPin')
         self.us_delay = self.settings.get('us_delay')
         self.uS = self.settings.get('uS')
+
+        print(f"STEP: {self.STEP}, DIR: {self.DIR}, EN: {self.EN}, schalterLinksPin: {self.schalterLinksPin}, schalterRechtsPin: {self.schalterRechtsPin}, us_delay: {self.us_delay}, uS: {self.uS}")
         
         self.GPIOConfig()
         self.positionsFileHandler = FileHandler('./json/positions.json')
