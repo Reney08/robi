@@ -80,55 +80,6 @@ def servo_status():
     status = servo.get_status()
     return render_template('servo_status.html', status=status)
 
-@app.route('/status/scale')
-def scale_status():
-    weight = scale.get_weight()
-    return render_template('scale_status.html', weight=weight)
-
-@app.route('/scale/weight')
-def scale_weight():
-    weight = scale.get_weight()
-    if weight is not None:
-        return jsonify({'weight': weight})
-    return jsonify({'error': 'Scale is inactive.'})
-
-@app.route('/scale/activate', methods=['POST'])
-def scale_activate():
-    scale.activate()
-    return jsonify({'status': 'Scale activated'})
-
-@app.route('/scale/deactivate', methods=['POST'])
-def scale_deactivate():
-        scale.deactivate()
-        return jsonify({'status': 'Scale deactivated'})
-   
-@app.route('/servo/move', methods=['GET', 'POST'])
-def servo_move():
-    if request.method == 'POST':
-        if 'inactive_pos' in request.form and 'active_pos' in request.form and 'waiting_pos' in request.form:
-            # Handle updating servo positions
-            inactive_pos = int(request.form['inactive_pos'])
-            active_pos = int(request.form['active_pos'])
-            waiting_pos = int(request.form['waiting_pos'])
-            
-            servo.inactive_pos = inactive_pos
-            servo.active_pos = active_pos
-            servo.waiting_pos = waiting_pos
-            
-            return redirect(url_for('servo_status'))
-        else:
-            # Handle moving the servo
-            position = request.form['position']
-            if position == 'active':
-                servo.move_to_active()
-            elif position == 'inactive':
-                servo.move_to_inactive()
-            elif position == 'waiting':
-                servo.move_to_waiting()
-            return redirect(url_for('servo_status'))
-    
-    return render_template('servo_move.html')
-
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
     if request.method == 'POST':
