@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{ cocktail }}</title>
+    <title>{{ cocktail }} - Bar Roboter</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -11,7 +11,7 @@
             <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" class="svalogo" alt="Bar Robot Logo">
         </a>
         <center>
-            <a href="{{ url_for('index') }}" class="robotname">Bar Robot</a>
+            <span class="robotname">{{ cocktail }}</span>
         </center>
     </header>
     <main style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; text-align: center;">
