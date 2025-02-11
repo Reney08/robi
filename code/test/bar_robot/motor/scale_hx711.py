@@ -3,18 +3,21 @@ import RPi.GPIO as GPIO
 class HX711:
     def __init__(self, clock_pin, data_pin, gain=128):
         # Initialize the HX711 with the given clock and data pins and set up GPIO
+        self.settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+        self.settings = self.settingsFileHandler.readSettings()
+        
         self.clock_pin = clock_pin
         self.data_pin = data_pin
         GPIO.setup(self.clock_pin, GPIO.OUT)
         GPIO.setup(self.data_pin, GPIO.IN)
         GPIO.output(self.clock_pin, False)
 
-        self.GAIN = 0
-        self.OFFSET = 0
-        self.SCALE = 1
+        self.GAIN = self.settings.get('GAIN')
+        self.OFFSET = self.settings.get('OFFSET')
+        self.SCALE = self.settings.get('SCALE')
 
-        self.time_constant = 0.25
-        self.filtered = 0
+        self.time_constant = self.settings.get('time_constant')
+        self.filtered = self.settings.get('filtered')
 
         # Set the gain for the HX711
         self.set_gain(gain)
