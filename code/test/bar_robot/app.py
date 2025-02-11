@@ -19,6 +19,8 @@ stepper = StepperMotor()
 servo = ServoMotor()
 scale = Scale()
 
+with open('./json/liquids_mapping.json') as f:
+    liquids = json.load(f)
 # Ensure stepper motor is initialized
 if args.quick:
     stepper.load_positions()  # Load max_pos from positions.json
