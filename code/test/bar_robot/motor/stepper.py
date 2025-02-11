@@ -137,37 +137,37 @@ class StepperMotor:
         self.initialized = True
 
     def execute_sequence(self, sequence):
-    for step in sequence:
-        position_name = step["position"]
-        wait_time = step["wait_time"]
-
-        self.servo.move_to_inactive()
-        time.sleep(1)
-        
-        if position_name in self.positions:
-            target_steps = self.positions[position_name]
-            if target_steps != self.aktuellePos:
-                self.move_to_position(target_steps)
-            
-            time.sleep(1)
-        
-            self.servo.move_to_active()
-            time.sleep(wait_time)
-
+        for step in sequence:
+            position_name = step["position"]
+            wait_time = step["wait_time"]
+    
             self.servo.move_to_inactive()
             time.sleep(1)
-        
-        else: 
-            print(f"Invalid position in sequence: {position_name}")
             
-        if position_name == "finished":
-            self.servo.move_to_waiting()
-            time.sleep(10)
-            self.servo.move_to_inactive()
-            self.move_to_position(self.standartPos)
-            time.sleep(1)
-            break
-        
+            if position_name in self.positions:
+                target_steps = self.positions[position_name]
+                if target_steps != self.aktuellePos:
+                    self.move_to_position(target_steps)
+                
+                time.sleep(1)
+            
+                self.servo.move_to_active()
+                time.sleep(wait_time)
+    
+                self.servo.move_to_inactive()
+                time.sleep(1)
+            
+            else: 
+                print(f"Invalid position in sequence: {position_name}")
+                
+            if position_name == "finished":
+                self.servo.move_to_waiting()
+                time.sleep(10)
+                self.servo.move_to_inactive()
+                self.move_to_position(self.standartPos)
+                time.sleep(1)
+                break
+            
     def load_positions(self):
         try:
             self.nullPos = self.positions['nullPos']
