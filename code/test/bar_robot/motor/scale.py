@@ -4,10 +4,17 @@ import time
 from .scale_hx711 import HX711
 
 class Scale:
-    def __init__(self, clock_pin, data_pin, calibration_factor):
-        # Initialize the HX711 scale with the given clock and data pins
-        self.hx711 = HX711(clock_pin, data_pin)
-        self.calibration_factor = calibration_factor
+    def __init__(self):
+        # Initialize the Scale with settings from the settings file
+        self.settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+        self.settings = self.settingsFileHandler.readSettings()
+        
+        self.clock_pin = self.settings.get('clock_pin')
+        self.data_pin = self.settings.get('data_pin')
+        self.calibration_factor = self.settings.get('calibration_factor')
+        
+        self.hx711 = HX711(self.clock_pin, self.data_pin)
+        self.hx711.set_scale(self.calibration_factor)
         self.active = False
         self.weight = 0
         self.thread = None
