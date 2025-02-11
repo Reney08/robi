@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO
 
+from fileHandler import FileHandler
+
 class HX711:
     def __init__(self, clock_pin, data_pin, gain=128):
         # Initialize the HX711 with the given clock and data pins and set up GPIO
