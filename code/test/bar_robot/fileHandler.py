@@ -1,4 +1,5 @@
 import json
+import os
 
 class FileHandler:
     def __init__(self, filepath):
@@ -29,7 +30,7 @@ class FileHandler:
                     key, value = line.strip().split('=')
                     settings[key] = self._convert_value(value)
         except FileNotFoundError:
-            # If the file is not found, print a warning and return an empty dictionary
+            # If the file is not found, create it with default settings
             print(f"Warning: {self.filepath} not found. Creating default settings.")
             self.create_default_settings()
             settings = self.readSettings()
@@ -46,6 +47,9 @@ class FileHandler:
                 return value
 
     def create_default_settings(self):
+        # Ensure the directory exists
+        os.makedirs(os.path.dirname(self.filepath), exist_ok=True)
+        
         default_settings = """
             STEP=17
             DIR=27
