@@ -1,5 +1,5 @@
 import RPi.GPIO as GPIO
-from scale_hx711 import HX711
+from .scale_hx711 import HX711
 
 class Scale:
     def __init__(self, clock_pin, data_pin, calibration_factor):
