@@ -45,23 +45,23 @@ class FileHandler:
 
     def create_default_settings(self):
         default_settings = """
-        STEP=17
-        DIR=27
-        EN=23
-        schalterLinksPin=16
-        schalterRechtsPin=24
-        us_delay=950
-        uS=0.000001
-        pulse_min=150
-        pulse_max=600
-        GAIN=0
-        OFFSET=0
-        SCALE=1
-        time_constant=0.25
-        filtered=0
-        clock_pin=6
-        data_pin=5
-        calibration_factor=-0.0009405187713438978
-        """
+            STEP=17
+            DIR=27
+            EN=23
+            schalterLinksPin=16
+            schalterRechtsPin=24
+            us_delay=950
+            uS=0.000001
+            pulse_min=150
+            pulse_max=600
+            GAIN=0
+            OFFSET=0
+            SCALE=1
+            time_constant=0.25
+            filtered=0
+            clock_pin=6
+            data_pin=5
+            calibration_factor=-0.0009405187713438978
+            """
         with open(self.filepath, 'w') as f:
             f.write(default_settings)
