@@ -16,7 +16,6 @@
     </header>
     <main style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap; text-align: center;">
         <div style="flex: 1;">
-            <a>{{ cocktail }}</a>
             {% for ingredient, volume in ingredients.items() %}
             <div style="padding-top: 15px">
                 <h1 class="zutat">{{ ingredient }} - {{ volume }}ml</h1>
