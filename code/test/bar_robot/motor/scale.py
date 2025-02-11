@@ -1,7 +1,6 @@
 import RPi.GPIO as GPIO
 import threading
 import time
-
 from .scale_hx711 import HX711
 
 class Scale:
@@ -11,22 +10,25 @@ class Scale:
         self.active = False
         self.weight = 0
         self.thread = None
+        self.thread_stop_event = threading.Event()
 
     def activate(self):
         self.hx711.tare()
         self.active = True
+        self.thread_stop_event.clear()
         if self.thread is None:
             self.thread = threading.Thread(target=self._update_weight)
             self.thread.start()
 
     def deactivate(self):
         self.active = False
+        self.thread_stop_event.set()
         if self.thread is not None:
             self.thread.join()
             self.thread = None
 
     def _update_weight(self):
-        while self.active:
+        while not self.thread_stop_event.is_set():
             weight = self.hx711.read_average(3) * self.calibration_factor
             if weight < 0:
                 weight = 0
