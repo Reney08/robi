@@ -9,7 +9,7 @@ class StepperMotor:
         # Initialize the StepperMotor with logger, GPIO configuration, and file handlers
         self.logger = setup_logger()
         self.settingsFileHandler = FileHandler('./bar_robot/settings.json')
-        self.settings = self.settingsFileHandler.readSettings()
+        self.settings = self.settingsFileHandler.readJson()
         
         self.STEP = self.settings.get('STEP')
         self.DIR = self.settings.get('DIR')
