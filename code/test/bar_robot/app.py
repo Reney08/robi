@@ -87,26 +87,20 @@ def scale_status():
 
 @app.route('/scale/weight')
 def scale_weight():
-    if args.scale:
-        weight = scale.get_weight()
-        if weight is not None:
-            return jsonify({'weight': weight})
-        return jsonify({'error': 'Scale is inactive.'})
-    return jsonify({'error': 'Scale is not activated.'})
+    weight = scale.get_weight()
+    if weight is not None:
+        return jsonify({'weight': weight})
+    return jsonify({'error': 'Scale is inactive.'})
 
 @app.route('/scale/activate', methods=['POST'])
 def scale_activate():
-    if args.scale:
-        scale.activate()
-        return jsonify({'status': 'Scale activated'})
-    return jsonify({'error': 'Scale is not activated.'})
+    scale.activate()
+    return jsonify({'status': 'Scale activated'})
 
 @app.route('/scale/deactivate', methods=['POST'])
 def scale_deactivate():
-    if args.scale:
         scale.deactivate()
         return jsonify({'status': 'Scale deactivated'})
-    return jsonify({'error': 'Scale is not activated.'})
    
 @app.route('/servo/move', methods=['GET', 'POST'])
 def servo_move():
