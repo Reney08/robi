@@ -21,6 +21,7 @@ scale = Scale()
 
 with open('./json/liquids_mapping.json') as f:
     liquids = json.load(f)
+    
 # Ensure stepper motor is initialized
 if args.quick:
     stepper.load_positions()  # Load max_pos from positions.json
@@ -48,11 +49,21 @@ def selected_cocktail(selected_cocktail):
 @app.route('/start_mixing', methods=['POST'])
 def start_mixing():
     cocktail = request.form['cocktail']
-    sequence = stepper.load_sequence(cocktail)
-    if sequence:
-        stepper.execute_sequence(sequence)
-        return redirect(url_for('index'))
-    return redirect(url_for('selected_cocktail', selected_cocktail=cocktail))
+    with open(f'./json/{cocktail}.json') as f:
+        ingredients = json.load(f)
+    
+    sequence = []
+    for ingredient, volume in ingredients.items():
+        if volume > 0:
+            position = liquids[ingredient]
+            times = volume // 25
+            for _ in range(times):
+                sequence.append({"position": position, "wait_time": 5})
+    
+    sequence.append({"position": "finished", "wait_time": 10})
+    
+    stepper.execute_sequence(sequence)
+    return redirect(url_for('index'))
     
 @app.route('/status')
 def status():
