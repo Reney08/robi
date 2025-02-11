@@ -1,7 +1,9 @@
 import RPi.GPIO as GPIO
 import threading
 import time
+
 from .scale_hx711 import HX711
+from fileHandler import FileHandler
 
 class Scale:
     def __init__(self):
