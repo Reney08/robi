@@ -1,36 +1,35 @@
 import RPi.GPIO as GPIO
 import time
-import json
 from fileHandler import FileHandler
 from logger import setup_logger
 from motor.servo import ServoMotor
 
 class StepperMotor:
-    # Define GPIO pins and timing constants
-    STEP = 17
-    DIR = 27
-    EN = 23
-    schalterLinksPin = 16
-    schalterRechtsPin = 24
-    us_delay = 950
-    uS = 0.000001
-
     def __init__(self):
         # Initialize the StepperMotor with logger, GPIO configuration, and file handlers
         self.logger = setup_logger()
+        self.settingsFileHandler = FileHandler('/bar_robot/settings.txt')
+        self.settings = self.settingsFileHandler.readSettings()
+        
+        self.STEP = self.settings.get('STEP')
+        self.DIR = self.settings.get('DIR')
+        self.EN = self.settings.get('EN')
+        self.schalterLinksPin = self.settings.get('schalterLinksPin')
+        self.schalterRechtsPin = self.settings.get('schalterRechtsPin')
+        self.us_delay = self.settings.get('us_delay')
+        self.uS = self.settings.get('uS')
+        
         self.GPIOConfig()
         self.positionsFileHandler = FileHandler('./json/positions.json')
         self.positions = self.positionsFileHandler.readJson()
         self.initFileHandler = FileHandler('./json/stepper_init.json')
         self.initSequence = self.initFileHandler.readJson()
-        self.available_cocktails_file = "./json/available_cocktails.json"
         self.aktuellePos = 0
         self.maxPos = 0
         self.nullPos = 0
         self.standartPos = 20  # Default value
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor()
-        self.load_available_cocktails()
         self.load_positions()
         # self.init()
 
@@ -212,33 +211,9 @@ class StepperMotor:
             del self.positions[position_name]
             self.save_positions()
 
-    def load_sequence(self, cocktail_name):
-        # Load a sequence from a JSON file
-        sequence_file = f"./json/sequences/{cocktail_name}_sequence.json"
-        try:
-            with open(sequence_file, 'r') as f:
-                sequence = json.load(f)
-            return sequence
-        except FileNotFoundError:
-            print(f"Sequence file for {cocktail_name} not found.")
-            return None
-
-    def load_available_cocktails(self):
-        # Load available cocktails from a JSON file
-        try:
-            with open(self.available_cocktails_file, 'r') as f:
-                self.available_cocktails = json.load(f)
-        except FileNotFoundError:
-            print(f"Warning: {self.available_cocktails_file} not found. Creating default file.")
-            self.available_cocktails = []
-            self.save_available_cocktails()
-
-    def save_available_cocktails(self):
-        # Save available cocktails to a JSON file
-        with open(self.available_cocktails_file, 'w') as f:
-            json.dump(self.available_cocktails, f, indent=4)
-
     def shutdown(self):
         # Shutdown the stepper motor and clean up
         self.logger.info("Shutting down stepper motor")
-        GPIO.output(self
+        GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
+        self.servo.move_to_inactive()  # Ensure the servo is in the inactive position
+        self.logger.info("Stepper motor shutdown complete")
