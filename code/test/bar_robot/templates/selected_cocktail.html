@@ -16,13 +16,13 @@
     </header>
     <main>
         <a>{{ cocktail }}</a>
-        <img src="{{ url_for('static', filename= cocktail + '.png') }}" class="c_pic" alt="{{ cocktail }} Picture">
-        {% for ingredient in ingredients %}
-        <div style="padding-top: 15px">
-            <h1 class="zutat">{{ ingredient }}</h1>
-        </div>
-        {% endfor %}
-        <h2>Start Mixing</h2>
+            <img src="{{ url_for('static', filename= cocktail + '.png') }}" class="c_pic" alt="{{ cocktail }} Picture">
+            {% for ingredient, volume in ingredients.items() %}
+                <div style="padding-top: 15px">
+                    <h1 class="zutat">{{ ingredient }} - {{ volume }}ml</h1>
+                </div>
+            {% endfor %}
+            <h2>Start Mixing</h2>
         <form action="{{ url_for('start_mixing') }}" method="post">
             <input type="hidden" name="cocktail" value="{{ cocktail }}">
             <button type="submit" class="mixbutton">Jetzt Zubereiten!</button>
