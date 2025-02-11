@@ -18,7 +18,7 @@ parser.add_argument('-quick', action='store_true', help='Skip initialization and
 args = parser.parse_args()
 
 # Initialize FileHandler for settings
-settingsFileHandler = FileHandler()
+settingsFileHandler = FileHandler('./json/settings.json')
 settings = settingsFileHandler.readJson()
 
 # Initialize motors
