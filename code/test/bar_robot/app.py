@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from motor.stepper import StepperMotor
 from motor.servo import ServoMotor
 from motor.scale import Scale
+from fileHandler import FileHandler
+
 
 import json
 import argparse
@@ -15,11 +17,16 @@ parser = argparse.ArgumentParser(description='Bar Robot Application')
 parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to Standartposition')
 args = parser.parse_args()
 
+# Initialize FileHandler for settings
+settingsFileHandler = FileHandler('./json/settings.json')
+settings = settingsFileHandler.readJson()
+
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor()
-scale = Scale(clock_pin=6, data_pin=5, calibration_factor=-0.0009405187713438978)
+scale = Scale()
 
+# Load liquid mappings from JSON file
 with open('./json/liquids_mapping.json') as f:
     liquids = json.load(f)
     
@@ -33,12 +40,14 @@ else:
 
 @app.route('/')
 def index():
+    # List all cocktail JSON files and render the index page
     cocktail_files = glob.glob('./json/cocktails/*.json')
     cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
     return render_template('index.html', cocktails=cocktails)
 
 @app.route('/<selected_cocktail>')
 def selected_cocktail(selected_cocktail):
+    # Load ingredients for the selected cocktail and render the page
     ingredients_file = f'./json/cocktails/{selected_cocktail}.json'
     if os.path.exists(ingredients_file):
         with open(ingredients_file) as f:
@@ -49,6 +58,7 @@ def selected_cocktail(selected_cocktail):
 
 @app.route('/start_mixing', methods=['POST'])
 def start_mixing():
+    # Start mixing the selected cocktail
     cocktail = request.form['cocktail']
     with open(f'./json/cocktails/{cocktail}.json') as f:
         ingredients = json.load(f)
@@ -68,25 +78,30 @@ def start_mixing():
     
 @app.route('/status')
 def status():
+    # Render the status page
     return render_template('status.html')
 
 @app.route('/stepper/status')
 def stepper_status():
+    # Get and render the status of the stepper motor
     status = stepper.get_status()
     return render_template('stepper_status.html', status=status)
 
 @app.route('/servo/status')
 def servo_status():
+    # Get and render the status of the servo motor
     status = servo.get_status()
     return render_template('servo_status.html', status=status)
 
 @app.route('/scale/status')
 def scale_status():
+    # Get and render the weight from the scale
     weight = scale.get_weight()
     return render_template('scale_status.html', weight=weight)
 
 @app.route('/stepper/move', methods=['GET', 'POST'])
 def stepper_move():
+    # Handle stepper motor movements and render the move page
     if request.method == 'POST':
         action = request.form.get('action')
         try:
@@ -111,6 +126,7 @@ def stepper_move():
 
 @app.route('/scale/weight')
 def scale_weight():
+    # Get the weight from the scale and return it as JSON
     weight = scale.get_weight()
     if weight is not None:
         return jsonify({'weight': weight})
@@ -118,16 +134,19 @@ def scale_weight():
 
 @app.route('/scale/activate', methods=['POST'])
 def scale_activate():
+    # Activate the scale and return the status as JSON
     scale.activate()
     return jsonify({'status': 'Scale activated'})
 
 @app.route('/scale/deactivate', methods=['POST'])
 def scale_deactivate():
+    # Deactivate the scale and return the status as JSON
     scale.deactivate()
     return jsonify({'status': 'Scale deactivated'})
 
 @app.route('/shutdown')
 def shutdown():
+    # Shutdown all motors and return a shutdown message
     stepper.shutdown()
     servo.shutdown()
     scale.shutdown()
