@@ -151,6 +151,14 @@ class StepperMotor:
     
             self.servo.move_to_inactive()
             time.sleep(1)
+
+            if position_name == "finished":
+                self.servo.move_to_waiting()
+                time.sleep(10)
+                self.servo.move_to_inactive()
+                self.move_to_position(self.standartPos)
+                time.sleep(1)
+                break
             
             if position_name in self.positions:
                 target_steps = self.positions[position_name]
@@ -167,14 +175,6 @@ class StepperMotor:
             
             else: 
                 print(f"Invalid position in sequence: {position_name}")
-                
-            if position_name == "finished":
-                self.servo.move_to_waiting()
-                time.sleep(10)
-                self.servo.move_to_inactive()
-                self.move_to_position(self.standartPos)
-                time.sleep(1)
-                break
             
     def load_positions(self):
         # Load positions from the JSON file
