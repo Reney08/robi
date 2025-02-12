@@ -195,10 +195,16 @@ class StepperMotor:
         self.positions[position_name] = self.aktuellePos
         self.save_positions()
     
+    def move_and_save_position(self, steps, position_name):
+        # Move to a position and save it
+        target_position = self.aktuellePos + steps
+        self.move_to_position(target_position)
+        self.positions[position_name] = self.aktuellePos
+        self.save_positions()
+
     def save_positions(self):
         # Save positions to the JSON file
-        with open('./json/positions.json', 'w') as f:
-            json.dump(self.positions, f, indent=4)
+        self.positionsFileHandler.writeJson(self.positions)
 
     def edit_position(self, position_name, new_value):
         # Edit an existing position
@@ -212,10 +218,3 @@ class StepperMotor:
         if position_name not in ['finished', 'nullPos', 'maxPos']:
             del self.positions[position_name]
             self.save_positions()
-
-    def shutdown(self):
-        # Shutdown the stepper motor and clean up
-        self.logger.info("Shutting down stepper motor")
-        GPIO.output(self.EN, GPIO.HIGH)  # Disable the stepper motor
-        self.servo.move_to_inactive()  # Ensure the servo is in the inactive position
-        self.logger.info("Stepper motor shutdown complete")
