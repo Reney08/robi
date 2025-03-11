@@ -218,3 +218,6 @@ class StepperMotor:
         if position_name not in ['finished', 'nullPos', 'maxPos']:
             del self.positions[position_name]
             self.save_positions()
+
+    def shutdown(self):
+        GPIO.cleanup()
