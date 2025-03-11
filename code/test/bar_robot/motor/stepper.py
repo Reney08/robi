@@ -220,4 +220,10 @@ class StepperMotor:
             self.save_positions()
 
     def shutdown(self):
+        # Ensure the motor is disabled
+        GPIO.output(self.EN, GPIO.HIGH)
+        time.sleep(1)  # Wait for a moment to ensure the motor is disabled
+        
+        # Clean up GPIO resources
         GPIO.cleanup()
+        self.logger.info("GPIO cleaned up and motor shutdown")
