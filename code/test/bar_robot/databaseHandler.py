@@ -32,6 +32,8 @@ class DatabaseHandler:
     def get_outlet_position(self, beveragetype):
         return Outlet.query.filter_by(beveragetype=beveragetype).first()
 
+db = SQLAlchemy()
+
 class Outlet(db.Model):
     __tablename__ = 'outlets'
     index = db.Column(db.Integer, primary_key=True, autoincrement=True)
