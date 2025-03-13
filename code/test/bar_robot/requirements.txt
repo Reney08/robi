@@ -1,3 +1,6 @@
 Flask
 RPi.GPIO
 Adafruit_PCA9685
+Flask-SQLAlchemy
+PyMySQL
+SQLAlchemy
