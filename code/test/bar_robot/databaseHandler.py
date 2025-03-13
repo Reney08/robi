@@ -18,9 +18,9 @@ class DatabaseHandler:
         with app.app_context():
             if self.check_database_connection():
                 if not self.table_exists('outlets'):
-                    db.create_all(bind=['outlets'])
+                    db.create_all('outlets')
                 if not self.table_exists('ingredients'):
-                    db.create_all(bind=['ingredients'])
+                    db.create_all('ingredients')
             else:
                 raise Exception("Database connection failed")
             
