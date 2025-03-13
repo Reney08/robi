@@ -3,12 +3,13 @@ from motor.stepper import StepperMotor
 from motor.servo import ServoMotor
 from motor.scale import Scale
 from fileHandler import FileHandler
-
+from flask_sqlalchemy import SQLAlchemy
+from databaseHandler import DatabaseHandler, db
 
 import json
 import argparse
 import os
-import glob
+# import glob
 
 app = Flask(__name__)
 
@@ -17,18 +18,32 @@ parser = argparse.ArgumentParser(description='Bar Robot Application')
 parser.add_argument('-quick', action='store_true', help='Skip initialization and move stepper to Standartposition')
 args = parser.parse_args()
 
+'''
 # Initialize FileHandler for settings
 settingsFileHandler = FileHandler('./json/settings.json')
 settings = settingsFileHandler.readJson()
+
+# Load liquid mappings from JSON file
+with open('./json/liquids_mapping.json') as f:
+    liquids = json.load(f)
+'''
+
+#Database Configuration
+DB_USERNAME = "robi"
+DB_PASSWORD = "Keins123!"
+DB_NAME = "barroboterdatabase"
+DB_HOST = "localhost"
+DB_PORT = "3306"
+
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/{DB_NAME}"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db_handler = DatabaseHandler(app)
 
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor()
 scale = Scale()
-
-# Load liquid mappings from JSON file
-with open('./json/liquids_mapping.json') as f:
-    liquids = json.load(f)
     
 # Ensure stepper motor is initialized
 if args.quick:
@@ -41,8 +56,9 @@ else:
 @app.route('/')
 def index():
     # List all cocktail JSON files and render the index page
-    cocktail_files = glob.glob('./json/cocktails/*.json')
-    cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
+    #cocktail_files = glob.glob('./json/cocktails/*.json')
+    #cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
+    cocktails = db_handler.get_all_cocktails()
     return render_template('index.html', cocktails=cocktails)
 
 @app.route('/<selected_cocktail>')
