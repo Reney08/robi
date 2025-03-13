@@ -17,16 +17,13 @@ class DatabaseHandler:
         db.init_app(app)
         with app.app_context():
             if self.check_database_connection():
-                if not self.table_exists('outlets'):
-                    db.create_all('outlets')
-                if not self.table_exists('ingredients'):
-                    db.create_all('ingredients')
+                db.create_all()
             else:
                 raise Exception("Database connection failed")
             
     def check_database_connection(self):
         try:
-            db.session.execute('SELECT 1')
+            db.session.execute(text('SELECT 1'))
             return True
         except Exception as e:
             print(f"Database connection error: {e}")
@@ -44,11 +41,6 @@ class DatabaseHandler:
 
     def get_outlet_position(self, beveragetype):
         return Outlet.query.filter_by(beveragetype=beveragetype).first()
-    
-# database.py
-from flask_sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
 
 class Outlet(db.Model):
     __tablename__ = 'outlets'
