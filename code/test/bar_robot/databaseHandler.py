@@ -1,6 +1,7 @@
-# database.py
+# databaseHandler.py
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import inspect
+from sqlalchemy import inspect, text
+from database import db, Outlet, Ingredient
 
 class DatabaseHandler:
     def __init__(self, app):
@@ -31,19 +32,3 @@ class DatabaseHandler:
 
     def get_outlet_position(self, beveragetype):
         return Outlet.query.filter_by(beveragetype=beveragetype).first()
-
-db = SQLAlchemy()
-
-class Outlet(db.Model):
-    __tablename__ = 'outlets'
-    index = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    position = db.Column(db.String(100), nullable=False)
-    beveragetype = db.Column(db.String(100), nullable=False)
-
-class Ingredient(db.Model):
-    __tablename__ = 'ingredients'
-    index = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    beveragetype = db.Column(db.String(100), nullable=False)
-    volume = db.Column(db.Integer, nullable=False)
-    cocktail_id = db.Column(db.Integer, nullable=False)
-    sequence = db.Column(db.Integer, nullable=False)
