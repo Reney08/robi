@@ -26,24 +26,24 @@ class ServoMotor:
         self.positionsFileHandler = FileHandler('./json/positions.json')
         self.positions = self.positionsFileHandler.readJson()
 
-    def move_to_active(self):
-        # Move the servo to the active position
-        self.logger.info("Moving servo to active position")
-        self.pwm.set_pwm(0, 0, self.active_pos)
+    def move_to_active(self, channel):
+        # Move the specified servo to the active position
+        self.logger.info(f"Moving servo {channel} to active position")
+        self.pwm.set_pwm(channel, 0, self.active_pos)
         time.sleep(1)
         self.current_position = 'active'
 
-    def move_to_inactive(self):
-        # Move the servo to the inactive position
-        self.logger.info("Moving servo to inactive position")
-        self.pwm.set_pwm(0, 0, self.inactive_pos)
+    def move_to_inactive(self, channel):
+        # Move the specified servo to the inactive position
+        self.logger.info(f"Moving servo {channel} to inactive position")
+        self.pwm.set_pwm(channel, 0, self.inactive_pos)
         time.sleep(1)
         self.current_position = 'inactive'
 
-    def move_to_waiting(self):
-        # Move the servo to the waiting position
-        self.logger.info("Moving servo to waiting position")
-        self.pwm.set_pwm(0, 0, self.waiting_pos)
+    def move_to_waiting(self, channel):
+        # Move the specified servo to the waiting position
+        self.logger.info(f"Moving servo {channel} to waiting position")
+        self.pwm.set_pwm(channel, 0, self.waiting_pos)
         time.sleep(1)
         self.current_position = 'waiting'
         
@@ -53,9 +53,9 @@ class ServoMotor:
             'current_position': self.current_position
         }
 
-    def shutdown(self):
-        # Shutdown the servo motor and turn off the PWM signal
-        self.logger.info("Shutting down servo motor")
-        self.move_to_inactive()  # Ensure the servo is in the inactive position
-        self.pwm.set_pwm(0, 0, 0)  # Turn off the PWM signal
-        self.logger.info("Servo motor shutdown complete")
+    def shutdown(self, channel):
+        # Shutdown the specified servo motor and turn off the PWM signal
+        self.logger.info(f"Shutting down servo {channel}")
+        self.move_to_inactive(channel)  # Ensure the servo is in the inactive position
+        self.pwm.set_pwm(channel, 0, 0)  # Turn off the PWM signal
+        self.logger.info(f"Servo {channel} shutdown complete")
