@@ -38,7 +38,6 @@ DB_PORT = "3306"
 app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/{DB_NAME}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db.init_app(app)
 db_handler = DatabaseHandler(app)
 
 # Initialize motors
