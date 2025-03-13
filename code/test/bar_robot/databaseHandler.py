@@ -2,16 +2,6 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
 
-
-#Database Configuration
-DB_USERNAME = "robi"
-DB_PASSWORD = "Keins123!"
-DB_NAME = "barroboterdatabase"
-DB_HOST = "localhost"
-DB_PORT = "3306"
-
-db = SQLAlchemy()
-
 class DatabaseHandler:
     def __init__(self, app):
         db.init_app(app)
