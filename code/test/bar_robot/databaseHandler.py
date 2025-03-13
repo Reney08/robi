@@ -28,7 +28,8 @@ class DatabaseHandler:
         try:
             db.session.execute('SELECT 1')
             return True
-        except OperationalError:
+        except Exception as e:
+            print(f"Database connection error: {e}")
             return False
 
     def table_exists(self, table_name):
