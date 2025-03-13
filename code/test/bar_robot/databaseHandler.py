@@ -1,7 +1,6 @@
 # database.py
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import inspect
-from sqlalchemy import OperationalError
 
 
 #Database Configuration
