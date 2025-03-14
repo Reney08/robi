@@ -56,9 +56,9 @@ else:
 @app.route('/')
 def index():
     # List all cocktail JSON files and render the index page
-    #cocktail_files = glob.glob('./json/cocktails/*.json')
-    #cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
-    cocktails = db_handler.get_all_cocktails()
+    cocktail_files = glob.glob('./json/cocktails/*.json')
+    cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
+    # cocktails = db_handler.get_all_cocktails()
     return render_template('index.html', cocktails=cocktails)
 
 @app.route('/create_test_data')
