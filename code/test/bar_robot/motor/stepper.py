@@ -5,10 +5,10 @@ from logger import setup_logger
 from motor.servo import ServoMotor
 
 class StepperMotor:
-    channel = 13
     
-    def __init__(self):
+    def __init__(self, channel):
         # Initialize the StepperMotor with logger, GPIO configuration, and file handlers
+        self.channel = channel
         self.logger = setup_logger()
         self.settingsFileHandler = FileHandler('./json/settings.json')
         self.settings = self.settingsFileHandler.readJson()
