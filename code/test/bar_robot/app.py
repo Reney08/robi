@@ -9,7 +9,7 @@ from databaseHandler import DatabaseHandler, db
 import json
 import argparse
 import os
-# import glob
+import glob
 
 app = Flask(__name__)
 
