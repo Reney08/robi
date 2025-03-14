@@ -111,7 +111,7 @@ class StepperMotor:
         # Quickly initialize the stepper motor
         if self.initialized:
             return
-        self.servo.move_to_inactive()
+        self.servo.move_to_inactive(self.channel)
         time.sleep(1)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
