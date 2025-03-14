@@ -95,7 +95,7 @@ class StepperMotor:
         self.aktuellePos = target_steps
         if self.aktuellePos == self.standartPos or self.aktuellePos == self.maxPos:
             time.sleep(1)
-            self.servo.move_to_waiting()
+            self.servo.move_to_waiting(self.channel)
 
     def initMoveMotor(self, direction, stop_condition):
         # Move the motor in a specified direction until a stop condition is met
