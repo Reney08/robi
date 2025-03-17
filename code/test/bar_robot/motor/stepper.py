@@ -3,7 +3,8 @@ import RPi.GPIO as GPIO
 import time
 from fileHandler import FileHandler
 from logger import setup_logger
-from motor.servo import ServoMotor
+from pcadevice import PCADevice
+from servo import ServoMotor
 
 class StepperMotor:
     
