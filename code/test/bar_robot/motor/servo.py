@@ -1,4 +1,4 @@
-from pcadevice import PCADevice
+from motor.pcadevice import PCADevice
 
 
 # ServoMotor Inheriting from PCADevice
