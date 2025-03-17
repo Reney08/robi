@@ -42,7 +42,7 @@ db_handler = DatabaseHandler(app)
 
 # Initialize motors
 stepper = StepperMotor()
-servo = ServoMotor(address=0x41, channel=1)
+servo = ServoMotor(address=0x41, channel=0)
 scale = Scale()
     
 # Ensure stepper motor is initialized
