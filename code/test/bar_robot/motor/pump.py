@@ -1,11 +1,16 @@
 from motor.pcadevice import PCADevice
+from fileHandler import FileHandler
+from logger import setup_logger
 import time
 
 class Pump(PCADevice):
     def __init__(self, address, channel):
         super().__init__(address, channel)
 
-          # Load movement limits from settings file
+        # Initialize logging and settings
+        self.logger = setup_logger()
+        
+        # Load movement limits from settings file
         self.pulse_min = 150
         self.pulse_max = 1000000
 
@@ -36,6 +41,14 @@ class Pump(PCADevice):
         return {'current_position': self.current_position}
 
     def shutdown(self):
-        """Shutdown the servo by moving it to inactive and turning off the PWM signal."""
-        self.deactivate()  # Ensure the servo is in the inactive position
-        self.pca.set_pwm(self.channel, 0, 0)  # Turn off the PWM signal
+        """Shutdown the pump by moving it to inactive and turning off the PWM signal."""
+        print("Shutting down pump...")
+    
+        # Move the pump to its inactive position
+        self.deactivate()
+    
+        # Ensure PWM is completely turned off
+        time.sleep(0.5)  # Short delay to let it deactivate
+        self.pca.set_pwm(self.channel, 0, 0)  # Stop sending PWM signal
+    
+        print("Pump shut down successfully.")
