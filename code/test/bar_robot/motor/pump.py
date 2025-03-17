@@ -15,7 +15,7 @@ class Pump(PCADevice):
         self.inactive_pos = self.mid_pos + (self.range // 9) + 20
         self.active_pos = self.mid_pos - (self.range // 9) + 55
 
-          self.current_position = 'inactive'
+        self.current_position = 'inactive'
 
     def activate(self):
         """Move servo to the active position."""
