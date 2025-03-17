@@ -1,3 +1,4 @@
+
 import RPi.GPIO as GPIO
 import time
 from fileHandler import FileHandler
@@ -6,9 +7,8 @@ from motor.servo import ServoMotor
 
 class StepperMotor:
     
-    def __init__(self, channel):
+    def __init__(self):
         # Initialize the StepperMotor with logger, GPIO configuration, and file handlers
-        self.channel = channel
         self.logger = setup_logger()
         self.settingsFileHandler = FileHandler('./json/settings.json')
         self.settings = self.settingsFileHandler.readJson()
@@ -33,7 +33,7 @@ class StepperMotor:
         self.nullPos = 0
         self.standartPos = 20  # Default value
         self.initialized = False  # Ensure this attribute is set before calling init
-        self.servo = ServoMotor()
+        self.servo = ServoMotor(address=0x41, channel=1)
         self.load_positions()
         # self.init()
 
@@ -69,7 +69,7 @@ class StepperMotor:
     def moveRelPos(self, relative_steps, aktPos):
         # Move the stepper motor by a relative number of steps
         time.sleep(1)
-        self.servo.move_to_inactive(self.channel)
+        self.servo.deactivate()
         
         direction = GPIO.HIGH if relative_steps > 0 else GPIO.LOW
         absolute_steps = abs(relative_steps)
@@ -88,14 +88,14 @@ class StepperMotor:
 
     def move_to_position(self, target_steps):
         # Move the stepper motor to an absolute position
-        self.servo.move_to_inactive(self.channel)
+        self.servo.deactivate()
         
         relative_steps = target_steps - self.aktuellePos
         self.moveRelPos(relative_steps, self.aktuellePos)
         self.aktuellePos = target_steps
         if self.aktuellePos == self.standartPos or self.aktuellePos == self.maxPos:
             time.sleep(1)
-            self.servo.move_to_waiting(self.channel)
+            self.servo.move_to_waiting()
 
     def initMoveMotor(self, direction, stop_condition):
         # Move the motor in a specified direction until a stop condition is met
@@ -111,7 +111,7 @@ class StepperMotor:
         # Quickly initialize the stepper motor
         if self.initialized:
             return
-        self.servo.move_to_inactive(self.channel)
+        self.servo.deactivate()
         time.sleep(1)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
@@ -124,7 +124,7 @@ class StepperMotor:
         # Fully initialize the stepper motor
         if self.initialized:
             return
-        self.servo.move_to_inactive(self.channel)
+        self.servo.deactivate()
         time.sleep(1)
 
         for step in self.initSequence:
@@ -151,13 +151,13 @@ class StepperMotor:
             position_name = step["position"]
             wait_time = step["wait_time"]
     
-            self.servo.move_to_inactive(self.channel)
+            self.servo.deactivate()
             time.sleep(1)
 
             if position_name == "finished":
-                self.servo.move_to_waiting(self.channel)
+                self.servo.move_to_waiting()
                 time.sleep(10)
-                self.servo.move_to_inactive(self.channel)
+                self.servo.deactivate()
                 self.move_to_position(self.standartPos)
                 time.sleep(1)
                 break
@@ -169,10 +169,10 @@ class StepperMotor:
                 
                 time.sleep(1)
             
-                self.servo.move_to_active(self.channel)
+                self.servo.deactivate()
                 time.sleep(wait_time)
     
-                self.servo.move_to_inactive(self.channel)
+                self.servo.activate()
                 time.sleep(1)
             
             else: 
