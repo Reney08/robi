@@ -114,6 +114,7 @@ class StepperMotor:
         if self.initialized:
             return
         self.servo.deactivate()
+        self.pump.activate()
         time.sleep(1)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
