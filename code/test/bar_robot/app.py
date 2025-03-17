@@ -29,20 +29,21 @@ with open('./json/liquids_mapping.json') as f:
 
 
 #Database Configuration
-DB_USERNAME = "robi"
-DB_PASSWORD = "Keins123!"
-DB_NAME = "barroboterdatabase"
-DB_HOST = "localhost"
-DB_PORT = "3306"
+#DB_USERNAME = "robi"
+#DB_PASSWORD = "Keins123!"
+#DB_NAME = "barroboterdatabase"
+#DB_HOST = "localhost"
+#DB_PORT = "3306"
 
-app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/{DB_NAME}"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+#app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@localhost/{DB_NAME}"
+#app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
-db_handler = DatabaseHandler(app)
+#db_handler = DatabaseHandler(app)
 
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor(address=0x41, channel=0)
+servo = ServoMotor(address=0x40, channel=0)
 scale = Scale()
     
 # Ensure stepper motor is initialized
@@ -60,25 +61,6 @@ def index():
     cocktails = [os.path.splitext(os.path.basename(file))[0] for file in cocktail_files]
     # cocktails = db_handler.get_all_cocktails()
     return render_template('index.html', cocktails=cocktails)
-
-@app.route('/create_test_data')
-def create_test_data():
-    test_data = [
-        Ingredient(beveragetype='Vodka', volume=50, cocktail_id=1, sequence=1),
-        Ingredient(beveragetype='Gin', volume=30, cocktail_id=1, sequence=2),
-        Ingredient(beveragetype='Rum', volume=40, cocktail_id=2, sequence=1),
-        Ingredient(beveragetype='Tequila', volume=20, cocktail_id=2, sequence=2),
-        Ingredient(beveragetype='Whiskey', volume=60, cocktail_id=3, sequence=1),
-        Ingredient(beveragetype='Triple Sec', volume=15, cocktail_id=3, sequence=2)
-    ]
-    db.session.bulk_save_objects(test_data)
-    db.session.commit()
-    return "Test data created successfully!"
-
-@app.route('/view_test_data')
-def view_test_data():
-    ingredients = Ingredient.query.all()
-    return render_template('view_test_data.html', ingredients=ingredients)
 
 @app.route('/<selected_cocktail>')
 def selected_cocktail(selected_cocktail):
