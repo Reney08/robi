@@ -1,6 +1,6 @@
 from motor.pcadevice import PCADevice
 from motor.servo import ServoMotor
-
+from motor.pump import Pump
 import RPi.GPIO as GPIO
 import time
 from fileHandler import FileHandler
@@ -35,6 +35,7 @@ class StepperMotor:
         self.standartPos = 20  # Default value
         self.initialized = False  # Ensure this attribute is set before calling init
         self.servo = ServoMotor(address=0x41, channel=0)
+        self.pump = Pump(address=0x40, channel=0)
         self.load_positions()
         # self.init()
 
