@@ -10,10 +10,12 @@ class Pump(PCADevice):
         self.pulse_max = 600
 
         # Compute positions
-        self.mid_pos = (self.pulse_max + self.pulse_min) // 2
-        self.range = self.pulse_max - self.pulse_min
-        self.inactive_pos = 0
-        self.active_pos = self.mid_pos - (self.range // 9) 
+        #self.mid_pos = (self.pulse_max + self.pulse_min) // 2
+        #self.range = self.pulse_max - self.pulse_min
+        #self.inactive_pos = 0
+        #self.active_pos = self.mid_pos - (self.range // 9) 
+        self.inactive_pos = 150
+        self.active_pos = 600
 
         self.current_position = 'inactive'
 
