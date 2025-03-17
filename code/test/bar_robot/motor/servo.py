@@ -1,3 +1,6 @@
+from pcadevice import PCADevice
+
+
 # ServoMotor Inheriting from PCADevice
 class ServoMotor(PCADevice):
     def __init__(self, address, channel):
