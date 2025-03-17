@@ -1,10 +1,5 @@
 from abc import ABC, abstractmethod
 from Adafruit_PCA9685 import PCA9685
-from fileHandler import FileHandler
-from logger import setup_logger
-
-import time
-
 # Abstract Parent Class for PCA Devices
 class PCADevice(ABC):
     def __init__(self, address, channel):
