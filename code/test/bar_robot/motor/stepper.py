@@ -139,9 +139,11 @@ class StepperMotor:
                 self.maxPos = self.aktuellePos
                 time.sleep(1)
             elif step == "left_again":
-                self.move_to_position(self.standartPos)
-                self.aktuellePos = 0
+                elif step == "left_again":
+                self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)  # Move left until limit switch
+                self.aktuellePos = 0  # Reset current position after reaching left again
                 time.sleep(1)
+        self.move_to_position(self.standartPos)
 
         self.maxPos = abs(self.nullPos) + abs(self.maxPos)
         self.moveRelPos(10, self.aktuellePos)
