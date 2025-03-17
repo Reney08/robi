@@ -1,10 +1,10 @@
 {
   "nullPos": 0,
   "maxPos": 5107,
-  "standartPos": 20,
+  "standartPos": 5000,
   "Pos1": 25, 
   "Pos2": 525, 
   "Pos3": 1025, 
   "Pos4": 1525,
-  "finished": 5107 
+  "finished": 5000 
 }
