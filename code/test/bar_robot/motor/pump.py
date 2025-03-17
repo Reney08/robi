@@ -6,8 +6,8 @@ class Pump(PCADevice):
         super().__init__(address, channel)
 
           # Load movement limits from settings file
-        self.pulse_min = self.settings.get('pulse_min', 150)
-        self.pulse_max = self.settings.get('pulse_max', 600)
+        self.pulse_min = 150
+        self.pulse_max = 600
 
         # Compute positions
         self.mid_pos = (self.pulse_max + self.pulse_min) // 2
