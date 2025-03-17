@@ -34,7 +34,7 @@ class StepperMotor:
         self.nullPos = 0
         self.standartPos = 20  # Default value
         self.initialized = False  # Ensure this attribute is set before calling init
-        self.servo = ServoMotor(address=0x41, channel=1)
+        self.servo = ServoMotor(address=0x41, channel=0)
         self.load_positions()
         # self.init()
 
