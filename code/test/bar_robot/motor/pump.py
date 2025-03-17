@@ -15,7 +15,7 @@ class Pump(PCADevice):
         #self.inactive_pos = 0
         #self.active_pos = self.mid_pos - (self.range // 9) 
         self.inactive_pos = 150
-        self.active_pos = 6000
+        self.active_pos = 600
 
         self.current_position = 'inactive'
 
