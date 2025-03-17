@@ -41,7 +41,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db_handler = DatabaseHandler(app)
 
 # Initialize motors
-stepper = StepperMotor(2)
+stepper = StepperMotor()
 servo = ServoMotor()
 scale = Scale()
     
