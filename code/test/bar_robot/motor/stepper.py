@@ -114,7 +114,6 @@ class StepperMotor:
         if self.initialized:
             return
         self.servo.deactivate()
-        self.pump.activate()
         time.sleep(1)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
@@ -155,12 +154,14 @@ class StepperMotor:
             wait_time = step["wait_time"]
     
             self.servo.deactivate()
+            self.pump.deactivate()
             time.sleep(1)
 
             if position_name == "finished":
                 self.servo.move_to_waiting()
                 time.sleep(10)
                 self.servo.deactivate()
+                self.pump.deactivate()
                 self.move_to_position(self.standartPos)
                 time.sleep(1)
                 break
@@ -173,9 +174,11 @@ class StepperMotor:
                 time.sleep(1)
             
                 self.servo.deactivate()
+                self.pump.deactivate()
                 time.sleep(wait_time)
     
                 self.servo.activate()
+                self.pump.activate()
                 time.sleep(1)
             
             else: 
