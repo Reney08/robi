@@ -1,6 +1,8 @@
 from motor.pcadevice import PCADevice
 from fileHandler import FileHandler
 from logger import setup_logger
+import time
+
 
 # ServoMotor Inheriting from PCADevice
 class ServoMotor(PCADevice):
