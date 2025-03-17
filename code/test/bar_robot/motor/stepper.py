@@ -69,7 +69,7 @@ class StepperMotor:
     def moveRelPos(self, relative_steps, aktPos):
         # Move the stepper motor by a relative number of steps
         time.sleep(1)
-        self.servo.move_to_inactive()
+        self.servo.deactivate()
         
         direction = GPIO.HIGH if relative_steps > 0 else GPIO.LOW
         absolute_steps = abs(relative_steps)
@@ -88,7 +88,7 @@ class StepperMotor:
 
     def move_to_position(self, target_steps):
         # Move the stepper motor to an absolute position
-        self.servo.move_to_inactive()
+        self.servo.deactivate()
         
         relative_steps = target_steps - self.aktuellePos
         self.moveRelPos(relative_steps, self.aktuellePos)
@@ -111,7 +111,7 @@ class StepperMotor:
         # Quickly initialize the stepper motor
         if self.initialized:
             return
-        self.servo.move_to_inactive()
+        self.servo.deactivate()
         time.sleep(1)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
         time.sleep(1)
@@ -124,7 +124,7 @@ class StepperMotor:
         # Fully initialize the stepper motor
         if self.initialized:
             return
-        self.servo.move_to_inactive()
+        self.servo.deactivate()
         time.sleep(1)
 
         for step in self.initSequence:
@@ -151,13 +151,13 @@ class StepperMotor:
             position_name = step["position"]
             wait_time = step["wait_time"]
     
-            self.servo.move_to_inactive()
+            self.servo.deactivate()
             time.sleep(1)
 
             if position_name == "finished":
                 self.servo.move_to_waiting()
                 time.sleep(10)
-                self.servo.move_to_inactive()
+                self.servo.deactivate()
                 self.move_to_position(self.standartPos)
                 time.sleep(1)
                 break
@@ -169,10 +169,10 @@ class StepperMotor:
                 
                 time.sleep(1)
             
-                self.servo.move_to_active()
+                self.servo.deactivate()
                 time.sleep(wait_time)
     
-                self.servo.move_to_inactive()
+                self.servo.activate()
                 time.sleep(1)
             
             else: 
