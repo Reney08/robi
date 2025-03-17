@@ -1,7 +1,7 @@
 from motor.pcadevice import PCADevice
 import time
 
-class PCADevice(ABC):
+class Pump(PCADevice):
     def __init__(self, address, channel):
         super().__init__(address, channel)
 
