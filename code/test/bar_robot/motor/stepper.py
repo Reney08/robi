@@ -118,7 +118,7 @@ class StepperMotor:
         time.sleep(1)
     
         # Ensure direction is set correctly before moving left
-        GPIO.output(self.DIR, GPIO.LOW)
+        GPIO.output(self.DIR, GPIO.HIGH)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
     
         # Explicitly reset position tracking
@@ -127,7 +127,7 @@ class StepperMotor:
         time.sleep(1)
     
         # Ensure direction is set correctly before moving right
-        GPIO.output(self.DIR, GPIO.HIGH)
+        GPIO.output(self.DIR, GPIO.LOW)
         self.move_to_position(self.standartPos)
     
         self.initialized = True
