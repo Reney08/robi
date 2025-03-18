@@ -176,7 +176,15 @@ class StepperMotor:
                 self.move_to_position(self.standartPos)
                 time.sleep(1)
                 break
-            
+
+            if position_name == "pos5":
+                self.pump.reverse()
+                time.sleep(wait_time)
+                self.pump.deactivate()
+                time.sleep(1)
+                
+
+
             if position_name in self.positions:
                 target_steps = self.positions[position_name]
                 if target_steps != self.aktuellePos:
@@ -185,17 +193,11 @@ class StepperMotor:
                 time.sleep(1)
             
                 self.servo.activate()
-                time.sleep(1)
-
-                self.pump.activate()
                 time.sleep(wait_time)
-                self.pump.reverse()
-                time.sleep(1)
     
-                self.pump.deactivate()
                 self.servo.deactivate()
                 time.sleep(1)
-            
+        
             else: 
                 print(f"Invalid position in sequence: {position_name}")
             
