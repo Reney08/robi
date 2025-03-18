@@ -165,8 +165,8 @@ def scale_deactivate():
 @app.route('/pump/status')
 def pump_status():
     """Return the current PWM value and activation status of the pump."""
-    status = pump.get_status()
-    return jsonify({'status': status['current_position'], 'pwm_value': pump.active_pos if status['current_position'] == 'active' else pump.inactive_pos})
+    status = pump1.get_status()
+    return jsonify({'status': status['current_position'], 'pwm_value': pump1.active_pos if status['current_position'] == 'active' else pump1.inactive_pos})
 
 @app.route('/pump/move', methods=['GET', 'POST'])
 def pump_move():
@@ -175,14 +175,14 @@ def pump_move():
         action = request.form.get('action')
         try:
             if action == 'activate':
-                pump.activate()
+                pump1.activate()
             elif action == 'deactivate':
-                pump.deactivate()
+                pump1.deactivate()
             elif action == 'set_pwm':
                 new_pwm = int(request.form.get('pwm_value'))
-                if pump.pulse_min <= new_pwm <= pump.pulse_max:
-                    pump.pca.set_pwm(pump.channel, 0, new_pwm)
-                    pump.active_pos = new_pwm
+                if pump1.pulse_min <= new_pwm <= pump1.pulse_max:
+                    pump1.pca.set_pwm(pump1.channel, 0, new_pwm)
+                    pump1.active_pos = new_pwm
                     
                     # Save the new PWM value persistently
                     settings['pump_pwm'] = new_pwm
@@ -193,7 +193,7 @@ def pump_move():
         except (KeyError, ValueError):
             return "Bad Request: Invalid input.", 400
 
-    return render_template('pump_move.html', status=pump.get_status(), min_pwm=pump.pulse_min, max_pwm=pump.pulse_max)
+    return render_template('pump_move.html', status=pump1.get_status(), min_pwm=pump1.pulse_min, max_pwm=pump1.pulse_max)
 
 @app.route('/shutdown')
 def shutdown():
