@@ -11,11 +11,10 @@ class Pump(PCADevice):
         
         # Load movement limits from settings file
         self.pulse_min = 150
-        self.pulse_max = 600  # Example valid range
+        self.pulse_max = 100000000  # Example valid range
 
         # Compute positions
-        self.mid_pos = (self.pulse_max + self.pulse_min) // 2
-        self.range = self.pulse_max - self.pulse_min
+        self.mid_pos = self.pulse_max - self.pulse_min
         self.inactive_pos = 0
         self.active_pos = self.mid_pos - (self.range // 9)
 
