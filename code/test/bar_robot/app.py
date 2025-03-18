@@ -200,6 +200,7 @@ def shutdown():
     stepper.shutdown()
     servo.shutdown()
     scale.shutdown()
+    exit()
     return "System shutdown complete."
 
 if __name__ == '__main__':
