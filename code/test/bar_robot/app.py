@@ -182,6 +182,10 @@ def pump_move():
                 if pump.pulse_min <= new_pwm <= pump.pulse_max:
                     pump.pca.set_pwm(pump.channel, 0, new_pwm)
                     pump.active_pos = new_pwm
+                    
+                    # Save the new PWM value persistently
+                    settings['pump_pwm'] = new_pwm
+                    settingsFileHandler.writeJson(settings)
                 else:
                     return "Bad Request: PWM value out of range.", 400
             return redirect(url_for('pump_move'))
