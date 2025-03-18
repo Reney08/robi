@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from motor.stepper import StepperMotor
 from motor.servo import ServoMotor
 from motor.scale import Scale
+from motor.pump import pump
 from fileHandler import FileHandler
 from flask_sqlalchemy import SQLAlchemy
 from databaseHandler import DatabaseHandler, db
@@ -43,7 +44,7 @@ with open('./json/liquids_mapping.json') as f:
 # Initialize motors
 stepper = StepperMotor()
 servo = ServoMotor(address=0x41, channel=0)
-servo = ServoMotor(address=0x40, channel=0)
+pump1 = Pump(address=0x40, channel=0)
 scale = Scale()
     
 # Ensure stepper motor is initialized
