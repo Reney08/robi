@@ -110,16 +110,26 @@ class StepperMotor:
             self.aktuellePos += 1 if direction == GPIO.HIGH else -1
 
     def quick_init(self):
-        # Quickly initialize the stepper motor
+        """ Quickly initialize the stepper motor. """
         if self.initialized:
             return
+    
         self.servo.deactivate()
         time.sleep(1)
+    
+        # Ensure direction is set correctly before moving left
+        GPIO.output(self.DIR, GPIO.LOW)
         self.initMoveMotor(GPIO.LOW, self.getSchalterLinksStatus)
-        time.sleep(1)
-        self.move_to_position(self.standartPos)
+    
+        # Explicitly reset position tracking
         self.aktuellePos = 0
+        self.nullPos = 0
         time.sleep(1)
+    
+        # Ensure direction is set correctly before moving right
+        GPIO.output(self.DIR, GPIO.HIGH)
+        self.move_to_position(self.standartPos)
+    
         self.initialized = True
 
     def init(self):
