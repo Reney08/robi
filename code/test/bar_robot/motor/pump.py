@@ -42,7 +42,7 @@ class Pump(PCADevice):
         time.sleep(1)
         self.current_position = 'inactive_pos'
 
-    def reverse():
+    def reverse(self):
         """Move servo to the inactive position."""
         self.pca.set_pwm(self.channel, 0, self.reverse_pos)
         time.sleep(1)
