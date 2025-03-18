@@ -162,15 +162,9 @@ def scale_deactivate():
     scale.deactivate()
     return jsonify({'status': 'Scale deactivated'})
 
-@app.route('/pump/status')
-def pump_status():
-    """Return the current PWM value and activation status of the pump."""
-    status = pump1.get_status()
-    return jsonify({'status': status['current_position'], 'pwm_value': pump1.active_pos if status['current_position'] == 'active' else pump1.inactive_pos})
-
-@app.route('/pump/move', methods=['GET', 'POST'])
-def pump_move():
-    """Control the pump movement and allow dynamic PWM adjustments."""
+@app.route('/pump', methods=['GET', 'POST'])
+def pump():
+    """Handle pump status retrieval and control pump movement."""
     if request.method == 'POST':
         action = request.form.get('action')
         try:
@@ -183,15 +177,18 @@ def pump_move():
                 if pump1.pulse_min <= new_pwm <= pump1.pulse_max:
                     pump1.pca.set_pwm(pump1.channel, 0, new_pwm)
                     pump1.active_pos = new_pwm
-                    
-                    # Save the new PWM value persistently
-                    settings['pump_pwm'] = new_pwm
-                    settingsFileHandler.writeJson(settings)
                 else:
                     return "Bad Request: PWM value out of range.", 400
-            return redirect(url_for('pump_move'))
+            return redirect(url_for('pump'))
         except (KeyError, ValueError):
             return "Bad Request: Invalid input.", 400
+
+    elif request.method == 'GET':
+        status = pump1.get_status()
+        return jsonify({
+            'status': status['current_position'],
+            'pwm_value': pump1.active_pos if status['current_position'] == 'active' else pump1.inactive_pos
+        })
 
     return render_template('pump_move.html', status=pump1.get_status(), min_pwm=pump1.pulse_min, max_pwm=pump1.pulse_max)
 
