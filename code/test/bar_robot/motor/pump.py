@@ -23,12 +23,10 @@ class Pump(PCADevice):
 
     def get_status(self):
         """Return the current position and PWM settings of the pump."""
-        on, off = self.pca.pwm(self.channel)  # Get PWM signal's on and off timings
         return {
             'current_position': self.current_position,
             'active_position': self.active_pos,
-            'inactive_position': self.inactive_pos,
-            'pwm_value': off  # Assuming 'off' represents the current PWM value
+            'inactive_position': self.inactive_pos
         }
 
     def activate(self):
