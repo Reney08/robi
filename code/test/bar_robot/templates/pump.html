@@ -16,18 +16,18 @@
         <h2>Current Pump Status: {{ status['current_position'] }}</h2>
         <h2>Current PWM Value: {{ status['pwm_value'] }}</h2>
         
-        <form action="{{ url_for('pump_move') }}" method="post">
+        <form action="{{ url_for('pump') }}" method="post">
             <input type="hidden" name="action" value="activate">
             <button type="submit">Activate Pump</button>
         </form>
         
-        <form action="{{ url_for('pump_move') }}" method="post">
+        <form action="{{ url_for('pump') }}" method="post">
             <input type="hidden" name="action" value="deactivate">
             <button type="submit">Deactivate Pump</button>
         </form>
         
         <h2>Adjust PWM Value</h2>
-        <form action="{{ url_for('pump_move') }}" method="post">
+        <form action="{{ url_for('pump') }}" method="post">
             <input type="hidden" name="action" value="set_pwm">
             <label for="pwm_value">PWM Value ({{ min_pwm }} - {{ max_pwm }}):</label>
             <input type="number" id="pwm_value" name="pwm_value" min="{{ min_pwm }}" max="{{ max_pwm }}" required>
