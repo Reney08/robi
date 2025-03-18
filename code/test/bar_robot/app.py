@@ -190,7 +190,7 @@ def pump():
             'pwm_value': pump1.active_pos if status['current_position'] == 'active' else pump1.inactive_pos
         })
 
-    return render_template('pump_move.html', status=pump1.get_status(), min_pwm=pump1.pulse_min, max_pwm=pump1.pulse_max)
+    return render_template('pump.html', status=pump1.get_status(), min_pwm=pump1.pulse_min, max_pwm=pump1.pulse_max)
 
 @app.route('/shutdown')
 def shutdown():
