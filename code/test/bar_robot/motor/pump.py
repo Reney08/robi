@@ -10,7 +10,7 @@ class Pump(PCADevice):
         self.logger = setup_logger()
         
         # Load movement limits from settings file
-        self.pulse_min = 150
+        self.pulse_min = 0
         self.pulse_max = 10000000  # Example valid range
 
         # Compute positions
