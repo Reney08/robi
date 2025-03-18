@@ -11,15 +11,13 @@ class Pump(PCADevice):
         
         # Load movement limits from settings file
         self.pulse_min = 150
-        self.pulse_max = 1000000
+        self.pulse_max = 600  # Example valid range
 
         # Compute positions
         self.mid_pos = (self.pulse_max + self.pulse_min) // 2
         self.range = self.pulse_max - self.pulse_min
         self.inactive_pos = 0
-        self.active_pos = self.mid_pos - (self.range // 9) 
-        #self.inactive_pos = 150
-        #self.active_pos = 600
+        self.active_pos = self.mid_pos - (self.range // 9)
 
         self.current_position = 'inactive'
 
@@ -43,10 +41,6 @@ class Pump(PCADevice):
         self.pca.set_pwm(self.channel, 0, self.inactive_pos)
         time.sleep(1)
         self.current_position = 'inactive'
-
-    def get_status(self):
-        """Return the current position of the servo."""
-        return {'current_position': self.current_position}
 
     def shutdown(self):
         """Shutdown the pump by moving it to inactive and turning off the PWM signal."""
