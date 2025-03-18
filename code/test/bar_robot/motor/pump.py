@@ -18,6 +18,7 @@ class Pump(PCADevice):
         self.range = self.pulse_max - self.pulse_min
         self.inactive_pos = 0
         self.active_pos = self.mid_pos - (self.range // 9)
+        self.reverse_pos = (self.mid_pos - (self.range // 9)) * -1 
 
         self.current_position = 'inactive'
 
@@ -39,7 +40,13 @@ class Pump(PCADevice):
         """Move servo to the inactive position."""
         self.pca.set_pwm(self.channel, 0, self.inactive_pos)
         time.sleep(1)
-        self.current_position = 'inactive'
+        self.current_position = 'inactive_pos'
+
+    def reversed():
+        """Move servo to the inactive position."""
+        self.pca.set_pwm(self.channel, 0, self.reverse_pos)
+        time.sleep(1)
+        self.current_position = 'reverse_pos'
 
     def shutdown(self):
         """Shutdown the pump by moving it to inactive and turning off the PWM signal."""
