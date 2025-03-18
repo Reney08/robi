@@ -100,7 +100,6 @@ class StepperMotor:
             self.servo.move_to_waiting()
 
     def initMoveMotor(self, direction, stop_condition):
-        # Move the motor in a specified direction until a stop condition is met
         GPIO.output(self.DIR, direction)
         while not stop_condition():
             GPIO.output(self.STEP, GPIO.HIGH)
