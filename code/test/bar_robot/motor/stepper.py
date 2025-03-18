@@ -185,10 +185,12 @@ class StepperMotor:
                 time.sleep(1)
             
                 self.servo.activate()
+                time.sleep(1)
+
                 self.pump.activate()
                 time.sleep(wait_time)
                 self.pump.reverse()
-                
+                time.sleep(1)
     
                 self.pump.deactivate()
                 self.servo.deactivate()
