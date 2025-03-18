@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Control Pump - Bar Robot</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <a href="{{ url_for('index') }}">
+            <img src="{{ url_for('static', filename='sva-logo-2024.png') }}" alt="Bar Robot Logo" class="logo">
+        </a>
+        <h1>Control Pump</h1>
+    </header>
+    <main>
+        <h2>Current Pump Status: {{ status['current_position'] }}</h2>
+        <h2>Current PWM Value: {{ status['pwm_value'] }}</h2>
+        
+        <form action="{{ url_for('pump_move') }}" method="post">
+            <input type="hidden" name="action" value="activate">
+            <button type="submit">Activate Pump</button>
+        </form>
+        
+        <form action="{{ url_for('pump_move') }}" method="post">
+            <input type="hidden" name="action" value="deactivate">
+            <button type="submit">Deactivate Pump</button>
+        </form>
+        
+        <h2>Adjust PWM Value</h2>
+        <form action="{{ url_for('pump_move') }}" method="post">
+            <input type="hidden" name="action" value="set_pwm">
+            <label for="pwm_value">PWM Value ({{ min_pwm }} - {{ max_pwm }}):</label>
+            <input type="number" id="pwm_value" name="pwm_value" min="{{ min_pwm }}" max="{{ max_pwm }}" required>
+            <button type="submit">Set PWM</button>
+        </form>
+    </main>
+</body>
+</html>

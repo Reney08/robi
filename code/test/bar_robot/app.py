@@ -161,6 +161,35 @@ def scale_deactivate():
     scale.deactivate()
     return jsonify({'status': 'Scale deactivated'})
 
+@app.route('/pump/status')
+def pump_status():
+    """Return the current PWM value and activation status of the pump."""
+    status = pump.get_status()
+    return jsonify({'status': status['current_position'], 'pwm_value': pump.active_pos if status['current_position'] == 'active' else pump.inactive_pos})
+
+@app.route('/pump/move', methods=['GET', 'POST'])
+def pump_move():
+    """Control the pump movement and allow dynamic PWM adjustments."""
+    if request.method == 'POST':
+        action = request.form.get('action')
+        try:
+            if action == 'activate':
+                pump.activate()
+            elif action == 'deactivate':
+                pump.deactivate()
+            elif action == 'set_pwm':
+                new_pwm = int(request.form.get('pwm_value'))
+                if pump.pulse_min <= new_pwm <= pump.pulse_max:
+                    pump.pca.set_pwm(pump.channel, 0, new_pwm)
+                    pump.active_pos = new_pwm
+                else:
+                    return "Bad Request: PWM value out of range.", 400
+            return redirect(url_for('pump_move'))
+        except (KeyError, ValueError):
+            return "Bad Request: Invalid input.", 400
+
+    return render_template('pump_move.html', status=pump.get_status(), min_pwm=pump.pulse_min, max_pwm=pump.pulse_max)
+
 @app.route('/shutdown')
 def shutdown():
     # Shutdown all motors and return a shutdown message
