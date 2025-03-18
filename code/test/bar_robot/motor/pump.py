@@ -24,13 +24,13 @@ class Pump(PCADevice):
         self.current_position = 'inactive'
 
     def get_status(self):
-    """Return the current position and PWM settings of the pump."""
-    return {
-        'current_position': self.current_position,
-        'active_position': self.active_pos,
-        'inactive_position': self.inactive_pos,
-        'pwm_value': self.pca.get_pwm(self.channel)  # Assuming PCA has a get_pwm method
-    }
+        """Return the current position and PWM settings of the pump."""
+        return {
+            'current_position': self.current_position,
+            'active_position': self.active_pos,
+            'inactive_position': self.inactive_pos,
+            'pwm_value': self.pca.get_pwm(self.channel)  # Assuming PCA has a get_pwm method
+        }
 
     def activate(self):
         """Move servo to the active position."""
