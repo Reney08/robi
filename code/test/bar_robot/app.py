@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from motor.stepper import StepperMotor
 from motor.servo import ServoMotor
 from motor.scale import Scale
-from motor.pump import pump
+from motor.pump import Pump
 from fileHandler import FileHandler
 from flask_sqlalchemy import SQLAlchemy
 from databaseHandler import DatabaseHandler, db
