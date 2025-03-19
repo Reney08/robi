@@ -160,7 +160,7 @@ class StepperMotor:
     def execute_sequence(self, sequence):
         # Execute a sequence of movements
         for step in sequence:
-            position_name = step["position"].strip().lower()
+            position_name = step["position"]
             wait_time = step["wait_time"]
     
             self.servo.deactivate()
