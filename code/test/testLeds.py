@@ -88,7 +88,7 @@ class TestAddressableRGBLEDs:
 # Hauptfunktion für einfache Tests
 if __name__ == "__main__":
     # Konfiguriere den GPIO-Pin und die Anzahl der LEDs
-    TEST_PIN = 18  # GPIO 18
+    TEST_PIN = 32  # GPIO 18
     TEST_NUM_LEDS = 60  # Anzahl der LEDs auf deinem Streifen
     TEST_BRIGHTNESS = 0.5  # Helligkeit (zwischen 0.0 und 1.0)
 
