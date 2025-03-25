@@ -64,7 +64,7 @@ class TestAddressableRGBLEDs:
         """
         self.pixels.fill((0, 0, 0))
         self.pixels.show()
-        print("LEDs cleared.")
+        # print("LEDs cleared.")
 
     def test_single_led(self, led_index, test_color=(255, 0, 0), wait=1):
         """
