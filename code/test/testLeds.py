@@ -78,7 +78,7 @@ class TestAddressableRGBLEDs:
             print(f"Error: LED index {led_index} is out of range (max index: {self.num_leds - 1}).")
             return
 
-        print(f"Testing LED {led_index} with color {test_color}.")
+        # print(f"Testing LED {led_index} with color {test_color}.")
         self.clear()
         self.pixels[led_index] = test_color
         self.pixels.show()
@@ -122,7 +122,7 @@ if __name__ == "__main__":
             elif choice == 4:
                 for i in range(TEST_NUM_LEDS):
                     leds.test_single_led(i)
-                    time.sleep(0.5)
+                    time.sleep(0.05)
             elif choice == 0:
                 print("Beenden des Testprogramms.")
                 leds.clear()
