@@ -1,6 +1,5 @@
 import time
 import neopixel
-import board
 
 
 class TestAddressableRGBLEDs:
@@ -89,8 +88,8 @@ class TestAddressableRGBLEDs:
 # Hauptfunktion für einfache Tests
 if __name__ == "__main__":
     # Konfiguriere den GPIO-Pin und die Anzahl der LEDs
-    TEST_PIN = board.D18  # GPIO 18
-    TEST_NUM_LEDS = 100  # Anzahl der LEDs auf deinem Streifen
+    TEST_PIN = 18  # GPIO 18
+    TEST_NUM_LEDS = 600  # Anzahl der LEDs auf deinem Streifen
     TEST_BRIGHTNESS = 0.5  # Helligkeit (zwischen 0.0 und 1.0)
 
     # LED-Testobjekt initialisieren
@@ -101,6 +100,7 @@ if __name__ == "__main__":
     print("1. Display Rainbow (Ctrl+C to stop)")
     print("2. Test a Single LED")
     print("3. Clear all LEDs")
+    print("4. Test all LEDs")
     print("0. Exit")
 
     while True:
@@ -118,6 +118,10 @@ if __name__ == "__main__":
                     print("Ungültiges Farbschema. Bitte erneut versuchen!")
             elif choice == 3:
                 leds.clear()
+            elif choice == 4:
+                for i in range(TEST_NUM_LEDS):
+                    leds.test_single_led(i)
+                    time.sleep(0.5)
             elif choice == 0:
                 print("Beenden des Testprogramms.")
                 leds.clear()
