@@ -1,6 +1,5 @@
 import time
 import neopixel
-import board
 
 
 class TestAddressableRGBLEDs:
@@ -64,9 +63,9 @@ class TestAddressableRGBLEDs:
         """
         self.pixels.fill((0, 0, 0))
         self.pixels.show()
-        # print("LEDs cleared.")
+        print("LEDs cleared.")
 
-    def test_single_led(self, led_index, test_color=(255, 0, 0), wait=1):
+    def test_single_led(self, led_index, test_color=(255, 0, 0), wait=0.5):
         """
         Testet eine einzelne LED am gegebenen Index.
 
@@ -78,18 +77,43 @@ class TestAddressableRGBLEDs:
             print(f"Error: LED index {led_index} is out of range (max index: {self.num_leds - 1}).")
             return
 
-        # print(f"Testing LED {led_index} with color {test_color}.")
+        print(f"Testing LED {led_index} with color {test_color}.")
         self.clear()
         self.pixels[led_index] = test_color
         self.pixels.show()
         time.sleep(wait)
         self.clear()
 
+    def run_color_loop(self):
+        """
+        Lässt den Benutzer eine Farbe auswählen und wendet sie dynamisch auf die LEDs an.
+        Die Schleife läuft, bis der Benutzer `Ctrl + C` drückt.
+        """
+        print("Drücke Strg+C, um das Programm zu beenden.")
+        print("Gib die neue Farbe als RGB-Werte (z. B. '255 0 0' für Rot) ein.")
+
+        try:
+            while True:
+                user_input = input("Neue Farbe (RGB-Werte): ")
+                try:
+                    r, g, b = map(int, user_input.split())
+                    if 0 <= r <= 255 and 0 <= g <= 255 and 0 <= b <= 255:
+                        self.set_color(r, g, b)
+                        print(f"Neue Farbe auf R:{r}, G:{g}, B:{b} gesetzt.")
+                    else:
+                        print("RGB-Werte müssen zwischen 0 und 255 liegen.")
+                except ValueError:
+                    print("Ungültige Eingabe. Bitte gib drei Zahlen ein, getrennt durch Leerzeichen.")
+        except KeyboardInterrupt:
+            print("\nProgramm beendet. LEDs werden ausgeschaltet.")
+            self.clear()
+
+
 
 # Hauptfunktion für einfache Tests
 if __name__ == "__main__":
     # Konfiguriere den GPIO-Pin und die Anzahl der LEDs
-    TEST_PIN = board.D18  # GPIO 18
+    TEST_PIN = 18  # GPIO 18
     TEST_NUM_LEDS = 600  # Anzahl der LEDs auf deinem Streifen
     TEST_BRIGHTNESS = 0.5  # Helligkeit (zwischen 0.0 und 1.0)
 
@@ -122,7 +146,9 @@ if __name__ == "__main__":
             elif choice == 4:
                 for i in range(TEST_NUM_LEDS):
                     leds.test_single_led(i)
-                    time.sleep(0.05)
+                    time.sleep(0.5)
+            elif choice == 5:
+                leds.run_color_loop()
             elif choice == 0:
                 print("Beenden des Testprogramms.")
                 leds.clear()
