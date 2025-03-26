@@ -99,6 +99,7 @@ class TestAddressableRGBLEDs:
                     r, g, b = map(int, user_input.split())
                     if 0 <= r <= 255 and 0 <= g <= 255 and 0 <= b <= 255:
                         self.set_color(r, g, b)
+                        self.pixels.show()
                         print(f"Neue Farbe auf R:{r}, G:{g}, B:{b} gesetzt.")
                     else:
                         print("RGB-Werte müssen zwischen 0 und 255 liegen.")
