@@ -108,6 +108,20 @@ class TestAddressableRGBLEDs:
             print("\nProgramm beendet. LEDs werden ausgeschaltet.")
             self.clear()
 
+    def set_color(self, r, g, b):
+        """
+        Setzt alle LEDs auf eine bestimmte Farbe.
+
+        :param r: Rot-Wert (0-255)
+        :param g: Grün-Wert (0-255)
+        :param b: Blau-Wert (0-255)
+        """
+        # Konvertiere Werte auf die Helligkeitsskala, falls nötig
+        scaled_color = (int(r * self.brightness), int(g * self.brightness), int(b * self.brightness))
+
+        # Wende die Farbe auf alle LEDs an
+        for i in range(self.num_leds):
+            self.pixels[i] = scaled_color  # Setze alle LEDs auf dieselbe Farbe
 
 
 # Hauptfunktion für einfache Tests
